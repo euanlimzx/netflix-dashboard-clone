@@ -5,7 +5,7 @@ import Image from "next/image"
 import { siteConfig } from "@/lib/config"
 
 export function HeroSection() {
-  const { desktop, mobile } = siteConfig.hero
+  const hero = siteConfig.hero
 
   return (
     <>
@@ -14,8 +14,8 @@ export function HeroSection() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src={desktop.backgroundImage || "/placeholder.svg"}
-            alt={desktop.backgroundAlt}
+            src={hero.image || "/placeholder.svg"}
+            alt={hero.imageAlt}
             fill
             className="object-cover object-top"
             priority
@@ -30,17 +30,11 @@ export function HeroSection() {
             className="text-7xl lg:text-8xl font-bold text-foreground mb-4 max-w-2xl leading-tight tracking-tight"
             style={{ fontFamily: "'Georgia', serif", fontStyle: "italic" }}
           >
-            <span
-              className="block text-5xl lg:text-6xl font-light text-foreground/90 tracking-wide"
-              style={{ fontStyle: "italic" }}
-            >
-              {desktop.titleLine1}
-            </span>
-            {desktop.titleLine2}
+            {hero.title}
           </h1>
 
           <p className="text-base text-foreground/90 max-w-md leading-relaxed mb-6">
-            {desktop.description}
+            {hero.description}
           </p>
 
           <div className="flex items-center gap-3">
@@ -49,7 +43,7 @@ export function HeroSection() {
               className="flex items-center gap-2 px-8 py-2.5 bg-foreground text-background rounded font-semibold text-base hover:bg-foreground/80 transition-colors"
             >
               <Play className="w-5 h-5 fill-current" />
-              {desktop.playButtonLabel}
+              {hero.playButtonLabel}
             </button>
 
             <button
@@ -57,7 +51,7 @@ export function HeroSection() {
               className="flex items-center gap-2 px-8 py-2.5 bg-foreground/30 text-foreground rounded font-semibold text-base hover:bg-foreground/20 transition-colors backdrop-blur-sm"
             >
               <Info className="w-5 h-5" />
-              {desktop.moreInfoButtonLabel}
+              {hero.moreInfoButtonLabel}
             </button>
           </div>
         </div>
@@ -85,7 +79,7 @@ export function HeroSection() {
           </button>
           <div className="border-l-2 border-foreground/50 pl-3 py-0.5">
             <span className="text-sm text-foreground/80 font-medium">
-              {desktop.maturityRating}
+              {hero.maturityRating}
             </span>
           </div>
         </div>
@@ -100,10 +94,10 @@ export function HeroSection() {
         <div className="relative z-10">
           <div className="relative w-full aspect-[2/3] max-w-[85%] mx-auto rounded-lg overflow-hidden shadow-2xl shadow-black/40">
             <Image
-              src={mobile.posterImage || "/placeholder.svg"}
-              alt={mobile.posterAlt}
+              src={hero.image || "/placeholder.svg"}
+              alt={hero.imageAlt}
               fill
-              className="object-cover"
+              className="object-cover object-center"
               priority
             />
 
@@ -112,11 +106,11 @@ export function HeroSection() {
 
             {/* Title and genre tags at the bottom of the poster */}
             <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center">
-              <h1 className="text-6xl font-extrabold text-foreground tracking-widest mb-2 text-center">
-                {mobile.title}
+              <h1 className="text-4xl font-extrabold text-foreground tracking-widest mb-2 text-center">
+                {hero.title}
               </h1>
               <p className="text-sm text-foreground/70 tracking-wide">
-                {mobile.genreTags.map((tag, i) => (
+                {hero.genreTags.map((tag, i) => (
                   <span key={tag}>
                     {i > 0 && (
                       <span className="mx-2 text-netflix-red">{"•"}</span>
@@ -135,7 +129,7 @@ export function HeroSection() {
               className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-foreground text-background rounded font-semibold text-base"
             >
               <Play className="w-5 h-5 fill-current" />
-              {mobile.playButtonLabel}
+              {hero.playButtonLabel}
             </button>
 
             <button
@@ -143,7 +137,7 @@ export function HeroSection() {
               className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-[#333333] text-foreground rounded font-semibold text-base"
             >
               <Plus className="w-5 h-5" />
-              {mobile.myListButtonLabel}
+              {hero.myListButtonLabel}
             </button>
           </div>
         </div>

@@ -3,7 +3,7 @@ export const siteConfig = {
   navbar: {
     logo: "NETFLIX",
     profileColor: "#4b7bec",
-    desktopLinks: [
+    navLinks: [
       { label: "Home", active: true },
       { label: "TV Shows", active: false },
       { label: "Movies", active: false },
@@ -11,35 +11,20 @@ export const siteConfig = {
       { label: "My List", active: false },
       { label: "Browse by Languages", active: false },
     ],
-    mobileGreeting: "For Alex",
-    mobileFilters: [
-      { label: "TV Shows", hasDropdown: false },
-      { label: "Movies", hasDropdown: false },
-      { label: "Categories", hasDropdown: true },
-    ],
   },
 
   // ─── Hero Section ────────────────────────────────────────
   hero: {
-    desktop: {
-      backgroundImage: "/images/hero-bg.jpg",
-      backgroundAlt: "Featured show hero background",
-      titleLine1: "young",
-      titleLine2: "Sheldon",
-      description:
-        'Brilliant yet awkward 9-year-old Sheldon Cooper lands in high school where his smarts leave everyone stumped in this "The Big Bang Theory" spin-off.',
-      playButtonLabel: "Play",
-      moreInfoButtonLabel: "More Info",
-      maturityRating: "TV-PG",
-    },
-    mobile: {
-      posterImage: "/images/hero-mobile.jpg",
-      posterAlt: "Suits featured show poster",
-      title: "SUITS",
-      genreTags: ["Slick", "Witty", "Dramedy"],
-      playButtonLabel: "Play",
-      myListButtonLabel: "My List",
-    },
+    image: "/images/hero-bg.jpg",
+    imageAlt: "Featured show hero background",
+    title: "Young Sheldon",
+    description:
+      'Brilliant yet awkward 9-year-old Sheldon Cooper lands in high school where his smarts leave everyone stumped in this "The Big Bang Theory" spin-off.',
+    genreTags: ["Comedy", "Family", "Heartwarming"],
+    maturityRating: "TV-PG",
+    playButtonLabel: "Play",
+    moreInfoButtonLabel: "More Info",
+    myListButtonLabel: "My List",
   },
 
   // ─── Bottom Navigation (mobile) ──────────────────────────
@@ -316,8 +301,7 @@ export const siteConfig = {
 
 // ─── Derived Types ─────────────────────────────────────────
 
-export type NavLink = (typeof siteConfig.navbar.desktopLinks)[number]
-export type MobileFilter = (typeof siteConfig.navbar.mobileFilters)[number]
+export type NavLink = (typeof siteConfig.navbar.navLinks)[number]
 export type BottomNavItem = (typeof siteConfig.bottomNav.items)[number]
 export type ContentRowConfig = (typeof siteConfig.contentRows)[number]
 export type ContentItem = ContentRowConfig["items"][number]

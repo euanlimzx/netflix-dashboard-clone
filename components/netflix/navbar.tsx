@@ -4,8 +4,15 @@ import { Search, Bell, ChevronDown, Download } from "lucide-react"
 import { siteConfig } from "@/lib/config"
 
 export function Navbar() {
-  const { logo, profileColor, desktopLinks, mobileGreeting, mobileFilters } =
-    siteConfig.navbar
+  const { logo, profileColor, navLinks } = siteConfig.navbar
+
+  // Derive mobile filters from navLinks
+  const mobileFilters = [
+    ...navLinks
+      .filter((link) => ["TV Shows", "Movies"].includes(link.label))
+      .map((link) => ({ label: link.label, hasDropdown: false })),
+    { label: "Categories", hasDropdown: true },
+  ]
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
@@ -21,7 +28,7 @@ export function Navbar() {
           </span>
 
           <ul className="hidden lg:flex items-center gap-5">
-            {desktopLinks.map((link) => (
+            {navLinks.map((link) => (
               <li key={link.label}>
                 <button
                   type="button"
@@ -76,7 +83,12 @@ export function Navbar() {
       <div className="flex flex-col md:hidden px-4 pt-3 pb-2 bg-gradient-to-b from-black/95 via-black/70 to-transparent">
         {/* Top row: Greeting + icons */}
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-bold text-foreground">{mobileGreeting}</h2>
+          <h2
+            className="text-xl font-bold text-netflix-red tracking-wider select-none"
+            style={{ fontFamily: "'Arial Black', sans-serif" }}
+          >
+            {logo}
+          </h2>
           <div className="flex items-center gap-5">
             <button
               type="button"
