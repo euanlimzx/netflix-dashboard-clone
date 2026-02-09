@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function NetflixIntro() {
+  const pathname = usePathname();
   const isMobile = useIsMobile();
   const [showAnimation, setShowAnimation] = useState(true);
   const [checkMobile, setCheckMobile] = useState(false);
@@ -25,8 +27,8 @@ export function NetflixIntro() {
     };
   }, []);
 
-  // Skip animation on mobile after 0.5s delay - render page directly
-  if ((checkMobile && isMobile) || !showAnimation) {
+  // Skip animation on /preview route, mobile after 0.5s delay, or when animation is done
+  if (pathname === "/preview" || (checkMobile && isMobile) || !showAnimation) {
     return null;
   }
 
