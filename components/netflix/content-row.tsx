@@ -3,11 +3,17 @@
 import { useRef } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
-import type { ContentItem } from "@/lib/config"
+
+type ContentItem = {
+  id: number
+  title: string
+  image: string
+  tag?: string
+}
 
 interface ContentRowProps {
   title: string
-  items: readonly ContentItem[]
+  items: readonly ContentItem[] | ContentItem[]
   onCardClick?: (id: number) => void
 }
 
@@ -72,7 +78,7 @@ function ContentCard({
   item: ContentItem
   onClick?: (id: number) => void
 }) {
-  const tag = "tag" in item ? (item as ContentItem & { tag?: string }).tag : undefined
+  const tag = item.tag
 
   return (
     <button

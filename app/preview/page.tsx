@@ -7,11 +7,10 @@ import { ContentRow } from "@/components/netflix/content-row"
 import { BottomNav } from "@/components/netflix/bottom-nav"
 import { ShowModal } from "@/components/netflix/show-modal"
 import { ConfigProvider, getDefaultConfig, SiteConfig } from "@/lib/config-context"
-import type { ShowDetail } from "@/lib/config"
 
 export default function PreviewPage() {
   const [config, setConfig] = useState<SiteConfig>(getDefaultConfig)
-  const [selectedShow, setSelectedShow] = useState<ShowDetail | null>(null)
+  const [selectedShow, setSelectedShow] = useState<SiteConfig["shows"][0] | null>(null)
 
   // Listen for config updates from parent window (editor)
   useEffect(() => {
@@ -33,7 +32,7 @@ export default function PreviewPage() {
   const handleCardClick = useCallback(
     (id: number) => {
       const detail = config.shows.find((s) => s.id === id)
-      if (detail) setSelectedShow(detail as ShowDetail)
+      if (detail) setSelectedShow(detail)
     },
     [config.shows]
   )

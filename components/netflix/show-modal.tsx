@@ -3,8 +3,23 @@
 import { useEffect, useCallback } from "react"
 import { X, Play, Plus, ThumbsUp, Volume2 } from "lucide-react"
 import Image from "next/image"
-import { siteConfig } from "@/lib/config"
-import type { ShowDetail } from "@/lib/config"
+import { useConfig } from "@/lib/config-context"
+
+type ShowDetail = {
+  id: number
+  title: string
+  image: string
+  tag?: string
+  matchPercent: number
+  year: number
+  rating: string
+  episodes: string
+  headline: string
+  synopsis: string
+  cast: string[]
+  genres: string[]
+  mood: string
+}
 
 interface ShowModalProps {
   show: ShowDetail | null
@@ -12,7 +27,8 @@ interface ShowModalProps {
 }
 
 export function ShowModal({ show, onClose }: ShowModalProps) {
-  const labels = siteConfig.modal
+  const config = useConfig()
+  const labels = config.modal
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {

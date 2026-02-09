@@ -3,7 +3,7 @@
 import { createContext, useContext, ReactNode } from "react"
 import { siteConfig } from "./config"
 
-// Mutable version of the config type for editing
+// Fully mutable version of the config type for editing
 export type SiteConfig = {
   navbar: {
     logo: string
@@ -21,36 +21,62 @@ export type SiteConfig = {
     moreInfoButtonLabel: string
     myListButtonLabel: string
   }
-  bottomNav: typeof siteConfig.bottomNav
-  contentRows: typeof siteConfig.contentRows
-  modal: typeof siteConfig.modal
-  shows: typeof siteConfig.shows
+  bottomNav: {
+    items: Array<{
+      label: string
+      iconName: "Home" | "Clapperboard" | null
+      active: boolean
+      avatar: boolean
+    }>
+  }
+  contentRows: Array<{
+    title: string
+    items: Array<{
+      id: number
+      title: string
+      image: string
+      tag?: string
+    }>
+  }>
+  modal: {
+    seriesBadgeLabel: string
+    playButtonLabel: string
+    addToListLabel: string
+    likeLabel: string
+    volumeLabel: string
+    closeLabel: string
+    castLabel: string
+    genresLabel: string
+    moodLabel: string
+    moreLabel: string
+    hdBadge: string
+    adBadge: string
+  }
+  shows: Array<{
+    id: number
+    title: string
+    image: string
+    tag?: string
+    matchPercent: number
+    year: number
+    rating: string
+    episodes: string
+    headline: string
+    synopsis: string
+    cast: string[]
+    genres: string[]
+    mood: string
+  }>
+}
+
+// Deep clone helper
+function deepClone<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj))
 }
 
 // Create a mutable copy of the default config for use as initial editor state
 export function getDefaultConfig(): SiteConfig {
-  return {
-    navbar: {
-      logo: siteConfig.navbar.logo,
-      profileColor: siteConfig.navbar.profileColor,
-      navLinks: siteConfig.navbar.navLinks.map((link) => ({ ...link })),
-    },
-    hero: {
-      image: siteConfig.hero.image,
-      imageAlt: siteConfig.hero.imageAlt,
-      title: siteConfig.hero.title,
-      description: siteConfig.hero.description,
-      genreTags: [...siteConfig.hero.genreTags],
-      maturityRating: siteConfig.hero.maturityRating,
-      playButtonLabel: siteConfig.hero.playButtonLabel,
-      moreInfoButtonLabel: siteConfig.hero.moreInfoButtonLabel,
-      myListButtonLabel: siteConfig.hero.myListButtonLabel,
-    },
-    bottomNav: siteConfig.bottomNav,
-    contentRows: siteConfig.contentRows,
-    modal: siteConfig.modal,
-    shows: siteConfig.shows,
-  }
+  return deepClone(siteConfig) as unknown as SiteConfig
 }
 
 // Context for providing config to components
