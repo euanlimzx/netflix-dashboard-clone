@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/netflix/hero-section"
 import { ContentRow } from "@/components/netflix/content-row"
 import { BottomNav } from "@/components/netflix/bottom-nav"
 import { ShowModal } from "@/components/netflix/show-modal"
+import { NetflixIntro } from "@/components/netflix/netflix-intro"
 import { useConfig, SiteConfig } from "@/lib/config-context"
 
 export default function Page() {
@@ -32,9 +33,11 @@ export default function Page() {
   }, [config.contentRows, config.shows])
 
   return (
-    <main className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection />
+    <>
+      <NetflixIntro />
+      <main className="min-h-screen bg-background">
+        <Navbar />
+        <HeroSection />
 
       {/* Content Rows - slightly overlapping the hero on desktop */}
       <div className="md:-mt-24 relative z-20 pt-4 md:pt-0">
@@ -56,6 +59,7 @@ export default function Page() {
 
       {/* Show Detail Modal */}
       <ShowModal show={selectedShow} onClose={() => setSelectedShowId(null)} />
-    </main>
+      </main>
+    </>
   )
 }

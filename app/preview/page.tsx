@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/netflix/hero-section"
 import { ContentRow } from "@/components/netflix/content-row"
 import { BottomNav } from "@/components/netflix/bottom-nav"
 import { ShowModal } from "@/components/netflix/show-modal"
+import { NetflixIntro } from "@/components/netflix/netflix-intro"
 import { ConfigProvider, getDefaultConfig, SiteConfig } from "@/lib/config-context"
 
 export default function PreviewPage() {
@@ -50,6 +51,7 @@ export default function PreviewPage() {
 
   return (
     <ConfigProvider config={config}>
+      <NetflixIntro />
       <main className="min-h-screen bg-background">
         <Navbar />
         <HeroSection />
