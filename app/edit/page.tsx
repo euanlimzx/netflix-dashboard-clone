@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Monitor, Smartphone } from "lucide-react"
 import { ConfigForm } from "@/components/editor/config-form"
 import { PreviewFrame } from "@/components/editor/preview-frame"
+import { CreateButton } from "@/components/editor/create-button"
+import { ShareDialog } from "@/components/editor/share-dialog"
 import { getDefaultConfig, SiteConfig } from "@/lib/config-context"
 
 type ViewportMode = "mobile" | "desktop"
@@ -11,17 +13,19 @@ type ViewportMode = "mobile" | "desktop"
 export default function EditPage() {
   const [config, setConfig] = useState<SiteConfig>(getDefaultConfig)
   const [viewport, setViewport] = useState<ViewportMode>("mobile")
+  const [shareUuid, setShareUuid] = useState<string | null>(null)
 
   return (
     <div className="h-screen flex bg-zinc-950">
       {/* Left Panel - Config Form */}
-      <div className="w-[400px] flex-shrink-0 border-r border-zinc-800 bg-zinc-900">
-        <div className="h-14 flex items-center px-6 border-b border-zinc-800">
+      <div className="w-[400px] flex-shrink-0 border-r border-zinc-800 bg-zinc-900 flex flex-col">
+        <div className="h-14 flex items-center justify-between px-6 border-b border-zinc-800">
           <h1 className="text-lg font-semibold text-foreground">
             Edit Configuration
           </h1>
+          <CreateButton config={config} onSuccess={setShareUuid} />
         </div>
-        <div className="h-[calc(100vh-56px)]">
+        <div className="flex-1 overflow-hidden">
           <ConfigForm config={config} onChange={setConfig} />
         </div>
       </div>
@@ -63,6 +67,13 @@ export default function EditPage() {
           <PreviewFrame config={config} viewport={viewport} />
         </div>
       </div>
+
+      {/* Share Dialog */}
+      <ShareDialog
+        uuid={shareUuid || ""}
+        open={shareUuid !== null}
+        onClose={() => setShareUuid(null)}
+      />
     </div>
   )
 }

@@ -295,3 +295,75 @@ export type ShowDetail = (typeof siteConfig.shows)[number]
 export function getShowById(id: number): ShowDetail | undefined {
   return siteConfig.shows.find((s) => s.id === id)
 }
+
+// ─── Mutable Config Type (for editing) ────────────────────
+
+export type SiteConfig = {
+  navbar: {
+    logo: string
+    profileColor: string
+    navLinks: Array<{ label: string; active: boolean }>
+  }
+  hero: {
+    image: string
+    imageAlt: string
+    title: string
+    description: string
+    genreTags: string[]
+    maturityRating: string
+    playButtonLabel: string
+    moreInfoButtonLabel: string
+    myListButtonLabel: string
+  }
+  bottomNav: {
+    items: Array<{
+      label: string
+      iconName: "Home" | "Clapperboard" | null
+      active: boolean
+      avatar: boolean
+    }>
+  }
+  contentRows: Array<{
+    title: string
+    showIds: number[]
+  }>
+  modal: {
+    seriesBadgeLabel: string
+    playButtonLabel: string
+    addToListLabel: string
+    likeLabel: string
+    volumeLabel: string
+    closeLabel: string
+    castLabel: string
+    genresLabel: string
+    moodLabel: string
+    moreLabel: string
+    hdBadge: string
+    adBadge: string
+  }
+  shows: Array<{
+    id: number
+    title: string
+    image: string
+    tag?: string
+    matchPercent: number
+    year: number
+    rating: string
+    episodes: string
+    headline: string
+    synopsis: string
+    cast: string[]
+    genres: string[]
+    mood: string
+  }>
+}
+
+// Deep clone helper
+function deepClone<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj))
+}
+
+// Create a mutable copy of the default config
+export function getDefaultConfig(): SiteConfig {
+  return deepClone(siteConfig) as unknown as SiteConfig
+}

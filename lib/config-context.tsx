@@ -1,78 +1,12 @@
 "use client"
 
 import { createContext, useContext, ReactNode } from "react"
-import { siteConfig } from "./config"
+import { siteConfig, getDefaultConfig } from "./config"
+import type { SiteConfig } from "./config"
 
-// Fully mutable version of the config type for editing
-export type SiteConfig = {
-  navbar: {
-    logo: string
-    profileColor: string
-    navLinks: Array<{ label: string; active: boolean }>
-  }
-  hero: {
-    image: string
-    imageAlt: string
-    title: string
-    description: string
-    genreTags: string[]
-    maturityRating: string
-    playButtonLabel: string
-    moreInfoButtonLabel: string
-    myListButtonLabel: string
-  }
-  bottomNav: {
-    items: Array<{
-      label: string
-      iconName: "Home" | "Clapperboard" | null
-      active: boolean
-      avatar: boolean
-    }>
-  }
-  contentRows: Array<{
-    title: string
-    showIds: number[]
-  }>
-  modal: {
-    seriesBadgeLabel: string
-    playButtonLabel: string
-    addToListLabel: string
-    likeLabel: string
-    volumeLabel: string
-    closeLabel: string
-    castLabel: string
-    genresLabel: string
-    moodLabel: string
-    moreLabel: string
-    hdBadge: string
-    adBadge: string
-  }
-  shows: Array<{
-    id: number
-    title: string
-    image: string
-    tag?: string
-    matchPercent: number
-    year: number
-    rating: string
-    episodes: string
-    headline: string
-    synopsis: string
-    cast: string[]
-    genres: string[]
-    mood: string
-  }>
-}
-
-// Deep clone helper
-function deepClone<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj))
-}
-
-// Create a mutable copy of the default config for use as initial editor state
-export function getDefaultConfig(): SiteConfig {
-  return deepClone(siteConfig) as unknown as SiteConfig
-}
+// Re-export for convenience
+export type { SiteConfig }
+export { getDefaultConfig }
 
 // Context for providing config to components
 const ConfigContext = createContext<SiteConfig | null>(null)
@@ -94,4 +28,64 @@ export function ConfigProvider({
   return (
     <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
   )
+}
+
+/**
+ * Checks if a config has any changes from the defaults
+ * Only compares editable fields (navbar.logo, hero.*, shows[].*)
+ */
+export function hasChanges(config: SiteConfig): boolean {
+  const defaults = getDefaultConfig()
+
+  // Check navbar.logo
+  if (config.navbar.logo !== defaults.navbar.logo) return true
+
+  // Check hero fields
+  if (config.hero.image !== defaults.hero.image) return true
+  if (config.hero.title !== defaults.hero.title) return true
+  if (config.hero.description !== defaults.hero.description) return true
+
+  // Check shows
+  if (config.shows.length !== defaults.shows.length) return true
+
+  for (let i = 0; i < config.shows.length; i++) {
+    const show = config.shows[i]
+    const defaultShow = defaults.shows.find((s) => s.id === show.id)
+
+    if (!defaultShow) return true // New show added
+
+    if (show.title !== defaultShow.title) return true
+    if (show.image !== defaultShow.image) return true
+    if (show.headline !== defaultShow.headline) return true
+    if (show.synopsis !== defaultShow.synopsis) return true
+    if (show.mood !== defaultShow.mood) return true
+    if (JSON.stringify(show.cast) !== JSON.stringify(defaultShow.cast)) return true
+    if (JSON.stringify(show.genres) !== JSON.stringify(defaultShow.genres)) return true
+  }
+
+  return false
+}
+
+/**
+ * Validates that required fields are filled
+ * Returns an array of error messages, empty if valid
+ */
+export function validateConfig(config: SiteConfig): string[] {
+  const errors: string[] = []
+
+  if (!config.hero.title.trim()) {
+    errors.push("Hero title is required")
+  }
+
+  if (!config.hero.description.trim()) {
+    errors.push("Hero description is required")
+  }
+
+  config.shows.forEach((show, index) => {
+    if (!show.title.trim()) {
+      errors.push(`Show ${index + 1} title is required`)
+    }
+  })
+
+  return errors
 }

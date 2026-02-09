@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 import { SiteConfig } from "@/lib/config-context"
+import { ImageUpload } from "./image-upload"
 
 interface ConfigFormProps {
   config: SiteConfig
@@ -128,8 +129,8 @@ function ShowItem({
             onChange={(v) => onUpdate(index, { title: v })}
           />
 
-          <TextInput
-            label="Image URL"
+          <ImageUpload
+            label="Show Image"
             value={show.image}
             onChange={(v) => onUpdate(index, { image: v })}
           />
@@ -212,11 +213,10 @@ export function ConfigForm({ config, onChange }: ConfigFormProps) {
 
       {/* Hero Section - Limited Fields */}
       <Section title="Hero Section" defaultOpen>
-        <TextInput
-          label="Image URL"
+        <ImageUpload
+          label="Hero Image"
           value={config.hero.image}
           onChange={(v) => update("hero", { image: v })}
-          placeholder="/images/hero-bg.jpg"
         />
         <TextInput
           label="Title"
