@@ -17,6 +17,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
   const [isDragging, setIsDragging] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const pendingLoadedUrlRef = useRef<string | null>(null)
 
   const handleFile = useCallback(async (file: File) => {
     setError(null)
@@ -44,15 +45,30 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
 
       const url = await storage.upload(file)
       onChange(url)
+      pendingLoadedUrlRef.current = url
       toast.success("Image uploaded successfully")
+      // Don't set isUploading false here — wait for the new image to load (see img onLoad)
     } catch (err) {
       const message = err instanceof Error ? err.message : "Upload failed"
       setError(message)
       toast.error(message)
-    } finally {
       setIsUploading(false)
     }
   }, [value, onChange])
+
+  const handleImageLoad = useCallback(() => {
+    if (pendingLoadedUrlRef.current && value === pendingLoadedUrlRef.current) {
+      pendingLoadedUrlRef.current = null
+      setIsUploading(false)
+    }
+  }, [value])
+
+  const handleImageError = useCallback(() => {
+    if (pendingLoadedUrlRef.current && value === pendingLoadedUrlRef.current) {
+      pendingLoadedUrlRef.current = null
+      setIsUploading(false)
+    }
+  }, [value])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -122,10 +138,21 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
               src={value}
               alt={label}
               className="w-full h-full object-cover"
+              onLoad={handleImageLoad}
+              onError={handleImageError}
             />
 
-            {/* Overlay with buttons */}
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+            {/* Loading overlay when replacing image — high z-index so always on top */}
+            {isUploading && (
+              <div className="absolute inset-0 z-50 bg-black/70 flex flex-col items-center justify-center gap-2 isolate">
+                <RefreshCw className="w-8 h-8 text-foreground/50 animate-spin" />
+                <span className="text-sm text-foreground/50">Uploading...</span>
+              </div>
+            )}
+
+            {/* Overlay with buttons (behind loading overlay) */}
+            {!isUploading && (
+            <div className="absolute inset-0 z-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
               <button
                 type="button"
                 onClick={handleClick}
@@ -145,6 +172,7 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
                 Remove
               </button>
             </div>
+            )}
           </div>
         </div>
       ) : (
