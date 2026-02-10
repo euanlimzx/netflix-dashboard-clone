@@ -101,7 +101,7 @@ export function HeroSection() {
         <div className="relative z-10">
           <div className="relative w-full aspect-[2/3] max-w-[85%] mx-auto rounded-lg overflow-hidden shadow-2xl shadow-black/40">
             <Image
-              src={hero.image || "/placeholder.svg"}
+              src={hero.mobileImage || hero.image || "/placeholder.svg"}
               alt={hero.imageAlt}
               fill
               className="object-cover object-center"

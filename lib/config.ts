@@ -16,6 +16,7 @@ export const siteConfig = {
   // ─── Hero Section ────────────────────────────────────────
   hero: {
     image: "/images/hero-bg.jpg",
+    mobileImage: "/images/hero-bg.jpg",
     imageAlt: "Featured show hero background",
     titleFont: "default" as const,
     title: "Young Sheldon",
@@ -307,6 +308,7 @@ export type SiteConfig = {
   }
   hero: {
     image: string
+    mobileImage: string
     imageAlt: string
     titleFont: "default" | "bebas"
     title: string

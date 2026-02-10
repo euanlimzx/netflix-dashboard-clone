@@ -214,9 +214,14 @@ export function ConfigForm({ config, onChange }: ConfigFormProps) {
       {/* Hero Section - Limited Fields */}
       <Section title="Hero Section" defaultOpen>
         <ImageUpload
-          label="Hero Image"
+          label="Desktop Hero Image"
           value={config.hero.image}
           onChange={(v) => update("hero", { image: v })}
+        />
+        <ImageUpload
+          label="Mobile Hero Image"
+          value={config.hero.mobileImage}
+          onChange={(v) => update("hero", { mobileImage: v })}
         />
         <div>
           <label className="block text-sm font-medium text-foreground/70 mb-1.5">

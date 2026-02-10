@@ -19,6 +19,7 @@ export async function savePreview(config: SiteConfig): Promise<string> {
     },
     hero: {
       image: config.hero.image,
+      mobileImage: config.hero.mobileImage,
       titleFont: config.hero.titleFont,
       title: config.hero.title,
       description: config.hero.description,
