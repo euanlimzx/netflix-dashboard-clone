@@ -17,15 +17,20 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
+      {/* Gradient overlay - behind content so logo and pills stay on top */}
+      <div
+        className="absolute inset-x-0 top-0 z-0 h-36 pointer-events-none bg-gradient-to-b from-black/80 via-black/50 to-transparent"
+        aria-hidden
+      />
       {/* Desktop Navbar */}
-      <div className="hidden md:flex items-center justify-between px-12 py-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
+      <div className="relative z-10 hidden md:flex items-center justify-between px-12 py-3">
         {/* Left Section */}
         <div className="flex items-center gap-8">
           <span className="text-netflix-red font-bold text-3xl tracking-[0.15em] select-none font-bebas">
             {logo}
           </span>
 
-          <ul className="hidden lg:flex items-center gap-5 font-bebas tracking-[0.1em]">
+          <ul className="hidden lg:flex items-center gap-5">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <button
@@ -78,7 +83,7 @@ export function Navbar() {
       </div>
 
       {/* Mobile Navbar */}
-      <div className="flex flex-col md:hidden px-4 pt-3 pb-2 bg-gradient-to-b from-black/95 via-black/70 to-transparent">
+      <div className="relative z-10 flex flex-col md:hidden px-4 pt-3 pb-2 bg-gradient-to-b from-black/95 via-black/70 to-transparent">
         {/* Top row: Greeting + icons */}
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-xl font-bold text-netflix-red tracking-[0.15em] select-none font-bebas">
