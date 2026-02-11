@@ -26,6 +26,9 @@ export async function savePreview(config: BrandConfig, brand: Brand): Promise<st
       title: config.hero.title,
       description: config.hero.description,
     },
+    modal: {
+      fullscreenMessage: config.modal.fullscreenMessage,
+    },
     shows: config.shows.map((show) => ({
       id: show.id,
       title: show.title,
@@ -97,6 +100,11 @@ function mergeWithDefaults(
   // Merge hero
   if (saved.hero) {
     merged.hero = { ...defaults.hero, ...saved.hero }
+  }
+
+  // Merge modal (e.g. fullscreenMessage)
+  if (saved.modal) {
+    merged.modal = { ...defaults.modal, ...saved.modal }
   }
 
   // Merge shows - match by ID and merge, keep defaults for unmatched

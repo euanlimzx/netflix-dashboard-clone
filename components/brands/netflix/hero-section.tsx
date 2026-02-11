@@ -17,10 +17,13 @@ export function HeroSection({
   const config = useConfig();
   const hero = config.hero;
   const desktopHeroRef = useRef<HTMLDivElement>(null);
-  const [gradientStart, setGradientStart] = useState<number | null>(null);
+  const [gradientEdges, setGradientEdges] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
 
-  // Measure where the image's left edge is (with object-contain object-right)
-  // and position the gradient to start there, eliminating the sharp line
+  // Measure where the image edges are (object-contain object-right, centered vertically)
+  // and position gradients to start there, eliminating sharp lines
   useEffect(() => {
     const container = desktopHeroRef.current;
     if (!container) return;
@@ -41,10 +44,14 @@ export function HeroSection({
         containerRect.height / naturalH
       );
       const renderedWidth = naturalW * scale;
+      const renderedHeight = naturalH * scale;
       const leftEdge = containerRect.width - renderedWidth; // object-right
-      const startPct = Math.max(0, (leftEdge / containerRect.width) * 100);
+      const topEdge = (containerRect.height - renderedHeight) / 2; // centered vertically
 
-      setGradientStart(startPct);
+      setGradientEdges({
+        left: Math.max(0, (leftEdge / containerRect.width) * 100),
+        top: Math.max(0, (topEdge / containerRect.height) * 100),
+      });
     };
 
     const img = container.querySelector("img");
@@ -80,13 +87,17 @@ export function HeroSection({
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-          {/* Gradient starts at image edge - smooth fade, no sharp line */}
+          {/* Left and top gradients start at image edges - smooth fade, no sharp lines */}
           <div
             className="absolute inset-0"
             style={{
               background: (() => {
-                const start = gradientStart ?? 25; // fallback until measured
-                return `linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) ${start}%, rgba(0,0,0,0.9) ${start + 5}%, rgba(0,0,0,0.6) ${start + 15}%, rgba(0,0,0,0.3) ${start + 30}%, transparent ${start + 50}%)`;
+                const left = gradientEdges?.left ?? 25;
+                const top = gradientEdges?.top ?? 15;
+                return [
+                  `linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) ${top}%, rgba(0,0,0,0.9) ${top + 5}%, rgba(0,0,0,0.6) ${top + 15}%, rgba(0,0,0,0.3) ${top + 30}%, transparent ${top + 50}%)`,
+                  `linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) ${left}%, rgba(0,0,0,0.9) ${left + 5}%, rgba(0,0,0,0.6) ${left + 15}%, rgba(0,0,0,0.3) ${left + 30}%, transparent ${left + 50}%)`,
+                ].join(", ");
               })(),
             }}
           />

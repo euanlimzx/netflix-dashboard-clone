@@ -25,6 +25,20 @@ export function getDefaultConfig(brand: Brand): BrandConfig {
 }
 
 /**
+ * Get default config for the editor with all images cleared (empty strings).
+ * Use when you want the edit form to start with no images.
+ */
+export function getDefaultConfigForEditing(brand: Brand): BrandConfig {
+  const config = getDefaultConfig(brand)
+  config.hero.image = ""
+  config.hero.mobileImage = ""
+  config.shows.forEach((show) => {
+    show.image = ""
+  })
+  return config
+}
+
+/**
  * Look up a show by id within a brand's config
  */
 export function getShowById(brand: Brand, id: number) {
