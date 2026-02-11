@@ -1,3 +1,2 @@
-- re-styling the entire thing
+
 - refactor defaults
-- for landing page

@@ -1,47 +1,49 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Monitor, Smartphone } from "lucide-react"
-import { ConfigForm } from "@/components/editor/config-form"
-import { PreviewFrame } from "@/components/editor/preview-frame"
-import { CreateButton } from "@/components/editor/create-button"
-import { ShareDialog } from "@/components/editor/share-dialog"
-import { getDefaultConfig } from "@/lib/brands"
-import { useBrand } from "@/lib/brand-context"
-import { useIsMobile } from "@/hooks/use-mobile"
-import type { BrandConfig } from "@/lib/brands"
+import { useState, useEffect } from "react";
+import { Monitor, Smartphone } from "lucide-react";
+import { ConfigForm } from "@/components/editor/config-form";
+import { PreviewFrame } from "@/components/editor/preview-frame";
+import { CreateButton } from "@/components/editor/create-button";
+import { ShareDialog } from "@/components/editor/share-dialog";
+import { getDefaultConfig } from "@/lib/brands";
+import { useBrand } from "@/lib/brand-context";
+import { useIsMobile } from "@/hooks/use-mobile";
+import type { BrandConfig } from "@/lib/brands";
 
-type ViewportMode = "mobile" | "desktop"
-type MobileView = "editor" | "preview"
+type ViewportMode = "mobile" | "desktop";
+type MobileView = "editor" | "preview";
 
 export default function EditPage() {
-  const brand = useBrand()
-  const [config, setConfig] = useState<BrandConfig>(() => getDefaultConfig(brand))
-  const [viewport, setViewport] = useState<ViewportMode>("mobile")
-  const [shareUuid, setShareUuid] = useState<string | null>(null)
-  const [sidebarOpenKey, setSidebarOpenKey] = useState<string | null>("hero")
-  const [mobileView, setMobileView] = useState<MobileView>("editor")
-  const isBrowserMobile = useIsMobile()
+  const brand = useBrand();
+  const [config, setConfig] = useState<BrandConfig>(() =>
+    getDefaultConfig(brand),
+  );
+  const [viewport, setViewport] = useState<ViewportMode>("mobile");
+  const [shareUuid, setShareUuid] = useState<string | null>(null);
+  const [sidebarOpenKey, setSidebarOpenKey] = useState<string | null>("hero");
+  const [mobileView, setMobileView] = useState<MobileView>("editor");
+  const isBrowserMobile = useIsMobile();
 
   // When browser is desktop (not mobile): listen for preview clicks and open the matching sidebar section
   useEffect(() => {
-    if (isBrowserMobile) return
+    if (isBrowserMobile) return;
     function handleMessage(event: MessageEvent) {
-      const data = event.data
-      if (data?.type !== "PREVIEW_CLICK") return
+      const data = event.data;
+      if (data?.type !== "PREVIEW_CLICK") return;
       if (data.target === "navbar") {
-        setSidebarOpenKey("navbar")
+        setSidebarOpenKey("navbar");
       } else if (data.target === "hero") {
-        setSidebarOpenKey("hero")
+        setSidebarOpenKey("hero");
       } else if (data.target === "show" && typeof data.showIndex === "number") {
         if (data.showIndex >= 0) {
-          setSidebarOpenKey(`show-${data.showIndex}`)
+          setSidebarOpenKey(`show-${data.showIndex}`);
         }
       }
     }
-    window.addEventListener("message", handleMessage)
-    return () => window.removeEventListener("message", handleMessage)
-  }, [isBrowserMobile])
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [isBrowserMobile]);
 
   // Desktop layout: current two-panel editor + preview
   if (!isBrowserMobile) {
@@ -58,7 +60,11 @@ export default function EditPage() {
             />
           </div>
           <div className="p-6">
-            <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
+            <CreateButton
+              config={config}
+              brand={brand}
+              onSuccess={setShareUuid}
+            />
           </div>
         </div>
 
@@ -105,7 +111,7 @@ export default function EditPage() {
           onClose={() => setShareUuid(null)}
         />
       </div>
-    )
+    );
   }
 
   // Mobile layout: single full-screen view (editor or preview) with floating toggle button
@@ -160,11 +166,7 @@ export default function EditPage() {
                 back to the Mobile view.
               </div>
             ) : (
-              <PreviewFrame
-                config={config}
-                viewport={viewport}
-                brand={brand}
-              />
+              <PreviewFrame config={config} viewport={viewport} brand={brand} />
             )}
           </div>
         </div>
@@ -177,10 +179,11 @@ export default function EditPage() {
             <>
               <button
                 type="button"
-                className="flex-1 rounded-md border border-black bg-white px-4 py-3 text-sm font-semibold text-gray-900 shadow-lg shadow-black/20"
+                className="flex-1 rounded-md border border-black bg-white px-4 py-3 text-[22px] font-bold text-gray-900 shadow-lg shadow-black/20 tracking-[-0.02em]"
+                style={{ fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif" }}
                 onClick={() => setMobileView("preview")}
               >
-                Show preview
+                Preview
               </button>
               <CreateButton
                 config={config}
@@ -193,7 +196,8 @@ export default function EditPage() {
           ) : (
             <button
               type="button"
-              className="flex-1 rounded-md bg-black px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-black/50"
+              className="flex-1 rounded-md bg-black px-4 py-3 text-[22px] font-bold text-white shadow-lg shadow-black/50 tracking-[-0.02em]"
+              style={{ fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif" }}
               onClick={() => setMobileView("editor")}
             >
               Back to editing
@@ -210,5 +214,5 @@ export default function EditPage() {
         onClose={() => setShareUuid(null)}
       />
     </div>
-  )
+  );
 }
