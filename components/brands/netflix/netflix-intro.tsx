@@ -27,8 +27,9 @@ export function NetflixIntro() {
     };
   }, []);
 
-  // Skip animation on /preview route, mobile after 0.5s delay, or when animation is done
-  if (pathname === "/preview" || (checkMobile && isMobile) || !showAnimation) {
+  // Skip animation on preview routes (e.g. /netflix/preview), mobile after 0.5s delay, or when animation is done
+  const isPreviewRoute = pathname.endsWith("/preview")
+  if (isPreviewRoute || (checkMobile && isMobile) || !showAnimation) {
     return null;
   }
 

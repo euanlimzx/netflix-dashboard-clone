@@ -12,12 +12,16 @@ interface ImageUploadProps {
   className?: string
 }
 
+type LoadingPhase = null | "uploading" | "loading-preview"
+
 export function ImageUpload({ label, value, onChange, className }: ImageUploadProps) {
-  const [isUploading, setIsUploading] = useState(false)
+  const [loadingPhase, setLoadingPhase] = useState<LoadingPhase>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const pendingLoadedUrlRef = useRef<string | null>(null)
+
+  const isUploading = loadingPhase !== null
 
   const handleFile = useCallback(async (file: File) => {
     setError(null)
@@ -33,40 +37,41 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
       return
     }
 
-    setIsUploading(true)
+    setLoadingPhase("uploading")
+    const previousUrl = value && value.includes("supabase") ? value : null
 
     try {
-      // If there's an existing image, delete it first
-      if (value && value.includes("supabase")) {
-        await storage.delete(value).catch(() => {
-          // Ignore delete errors - the old image will be orphaned but that's okay
-        })
-      }
-
       const url = await storage.upload(file)
       onChange(url)
       pendingLoadedUrlRef.current = url
       toast.success("Image uploaded successfully")
-      // Don't set isUploading false here — wait for the new image to load (see img onLoad)
+      setLoadingPhase("loading-preview")
+
+      // Delete previous image in background — don't block UI
+      if (previousUrl) {
+        storage.delete(previousUrl).catch(() => {
+          // Ignore delete errors; old image may be orphaned
+        })
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : "Upload failed"
       setError(message)
       toast.error(message)
-      setIsUploading(false)
+      setLoadingPhase(null)
     }
   }, [value, onChange])
 
   const handleImageLoad = useCallback(() => {
     if (pendingLoadedUrlRef.current && value === pendingLoadedUrlRef.current) {
       pendingLoadedUrlRef.current = null
-      setIsUploading(false)
+      setLoadingPhase(null)
     }
   }, [value])
 
   const handleImageError = useCallback(() => {
     if (pendingLoadedUrlRef.current && value === pendingLoadedUrlRef.current) {
       pendingLoadedUrlRef.current = null
-      setIsUploading(false)
+      setLoadingPhase(null)
     }
   }, [value])
 
@@ -146,7 +151,9 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
             {isUploading && (
               <div className="absolute inset-0 z-50 bg-black/70 flex flex-col items-center justify-center gap-2 isolate">
                 <RefreshCw className="w-8 h-8 text-foreground/50 animate-spin" />
-                <span className="text-sm text-foreground/50">Uploading...</span>
+                <span className="text-sm text-foreground/50">
+                  {loadingPhase === "uploading" ? "Uploading..." : "Loading preview..."}
+                </span>
               </div>
             )}
 
@@ -198,7 +205,9 @@ export function ImageUpload({ label, value, onChange, className }: ImageUploadPr
           {isUploading ? (
             <>
               <RefreshCw className="w-8 h-8 text-foreground/50 animate-spin" />
-              <span className="text-sm text-foreground/50">Uploading...</span>
+              <span className="text-sm text-foreground/50">
+                {loadingPhase === "uploading" ? "Uploading..." : "Loading preview..."}
+              </span>
             </>
           ) : error ? (
             <>

@@ -6,3 +6,5 @@
 - for no button https://magicui.design/docs/components/cool-mode
 - for landing page
 > https://magicui.design/docs/components/highlighter
+
+https://www.reactbits.dev/animations/glare-hover
