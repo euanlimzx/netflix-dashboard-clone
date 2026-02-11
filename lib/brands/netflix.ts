@@ -69,7 +69,7 @@ export const netflixConfig: BrandConfig = {
     moreLabel: "more",
     hdBadge: "HD",
     adBadge: "AD",
-    fullscreenMessage: "I love you. Happy Valentine's Day! 💕",
+    fullscreenMessage: "Hey MJ,\n\nI was going to swing by and leave these flowers on your balcony, but the wind chill at 40 stories is actually... really bad for roses.\n\nAnyway, thanks for always being the person who keeps my feet on the ground (literally and figuratively). You're my favorite person to get into trouble with. Happy Valentine's Day!\n\nP.S. Please don't look at the ceiling, I may have left a web-heart up there and I can't reach it to get it down.",
   },
 
   // ─── Show Details Database ───────────────────────────────

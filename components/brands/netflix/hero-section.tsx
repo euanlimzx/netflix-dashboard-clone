@@ -24,12 +24,12 @@ export function HeroSection({
         onClick={onEditorHeroClick}
       >
         {/* Background Image */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-background">
           <Image
             src={hero.image || "/placeholder.svg"}
             alt={hero.imageAlt}
             fill
-            className="object-cover object-top"
+            className="object-contain object-center"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
@@ -126,7 +126,7 @@ export function HeroSection({
               src={hero.mobileImage || hero.image || "/placeholder.svg"}
               alt={hero.imageAlt}
               fill
-              className="object-cover object-center"
+              className="object-contain object-center"
               priority
             />
 

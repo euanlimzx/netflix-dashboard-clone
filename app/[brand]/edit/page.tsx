@@ -20,6 +20,13 @@ export default function EditPage() {
     getDefaultConfig(brand),
   );
   const [viewport, setViewport] = useState<ViewportMode>("mobile");
+
+  // Default to desktop viewport when opening /edit on desktop
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 768) {
+      setViewport("desktop");
+    }
+  }, []);
   const [shareUuid, setShareUuid] = useState<string | null>(null);
   const [sidebarOpenKey, setSidebarOpenKey] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<MobileView>("editor");
