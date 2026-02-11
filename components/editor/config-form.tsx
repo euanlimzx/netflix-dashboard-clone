@@ -53,7 +53,7 @@ const Section = forwardRef<
         onClick={handleToggle}
         className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors"
       >
-        <span className="font-bold text-gray-900 text-[22px] tracking-[-0.02em]" style={{ fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+        <span className="font-bold text-gray-900 text-[22px] tracking-[-0.02em]" style={{ fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' }}>
           {title}
         </span>
         <ChevronDown
@@ -150,7 +150,7 @@ const ShowItem = forwardRef<
         }
         className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors"
       >
-        <span className="font-bold text-gray-900 text-[19px] tracking-[-0.02em]" style={{ fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+        <span className="font-bold text-gray-900 text-[19px] tracking-[-0.02em]" style={{ fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' }}>
           Show {index + 1}
         </span>
         <ChevronDown
@@ -318,7 +318,7 @@ export function ConfigForm({
           >
             <option value="default">Default (Georgia serif)</option>
             <option value="bebas">Bebas Neue</option>
-            <option value="sf-pro">SF Pro Display</option>
+            <option value="sf-pro">Inter (SF-style)</option>
           </select>
         </div>
         <TextInput

@@ -1,39 +1,12 @@
+/* Inter font - local, no external requests */
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/inter/latin-700.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* SF Pro Font */
-@font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://sf.akamaized.net/sf-pro-fonts/SF-Pro-Display-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://sf.akamaized.net/sf-pro-fonts/SF-Pro-Display-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://sf.akamaized.net/sf-pro-fonts/SF-Pro-Display-Semibold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://sf.akamaized.net/sf-pro-fonts/SF-Pro-Display-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
 
 @layer utilities {
   .text-balance {

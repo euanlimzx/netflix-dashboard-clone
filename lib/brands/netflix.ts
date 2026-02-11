@@ -20,7 +20,7 @@ export const netflixConfig: BrandConfig = {
     image: "/images/hero-bg.jpg",
     mobileImage: "/images/hero-bg.jpg",
     imageAlt: "Featured show hero background",
-    titleFont: "default",
+    titleFont: "sf-pro",
     title: "Young Sheldon",
     description:
       'Brilliant yet awkward 9-year-old Sheldon Cooper lands in high school where his smarts leave everyone stumped in this "The Big Bang Theory" spin-off.',

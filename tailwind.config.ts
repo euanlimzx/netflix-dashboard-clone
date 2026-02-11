@@ -72,7 +72,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          'SF Pro Display',
+          'Inter',
           '-apple-system',
           'BlinkMacSystemFont',
           'Segoe UI',

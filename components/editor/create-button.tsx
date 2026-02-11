@@ -5,15 +5,18 @@ import { Loader2, Sparkles } from "lucide-react";
 import { hasChanges, validateConfig } from "@/lib/config-context";
 import { savePreview } from "@/lib/preview-storage";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import type { Brand, BrandConfig } from "@/lib/brands";
 
 interface CreateButtonProps {
   config: BrandConfig;
   brand: Brand;
   onSuccess: (uuid: string) => void;
+  className?: string;
+  label?: string;
 }
 
-export function CreateButton({ config, brand, onSuccess }: CreateButtonProps) {
+export function CreateButton({ config, brand, onSuccess, className, label }: CreateButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreate = async () => {
@@ -52,10 +55,13 @@ export function CreateButton({ config, brand, onSuccess }: CreateButtonProps) {
       type="button"
       onClick={handleCreate}
       disabled={isLoading}
-      className="w-full flex items-center justify-center px-6 py-4 bg-black hover:bg-gray-900 disabled:bg-gray-400 rounded-md text-[22px] font-bold text-white transition-colors disabled:cursor-not-allowed tracking-[-0.02em]"
+      className={cn(
+        "flex items-center justify-center px-6 py-4 bg-black hover:bg-gray-900 disabled:bg-gray-400 rounded-md text-[22px] font-bold text-white transition-colors disabled:cursor-not-allowed tracking-[-0.02em]",
+        className ?? "w-full"
+      )}
       style={{
         fontFamily:
-          "SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif",
+          "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
       {isLoading ? (
@@ -64,7 +70,7 @@ export function CreateButton({ config, brand, onSuccess }: CreateButtonProps) {
           CREATING...
         </>
       ) : (
-        "Create Card"
+        label ?? "Create Card"
       )}
     </button>
   );
