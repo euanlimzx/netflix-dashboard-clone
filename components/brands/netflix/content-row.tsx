@@ -1,34 +1,34 @@
-"use client"
+"use client";
 
-import { useRef } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import Image from "next/image"
+import { useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 type ContentItem = {
-  id: number
-  title: string
-  image: string
-  tag?: string
-}
+  id: number;
+  title: string;
+  image: string;
+  tag?: string;
+};
 
 interface ContentRowProps {
-  title: string
-  items: readonly ContentItem[] | ContentItem[]
-  onCardClick?: (id: number) => void
+  title: string;
+  items: readonly ContentItem[] | ContentItem[];
+  onCardClick?: (id: number) => void;
 }
 
 export function ContentRow({ title, items, onCardClick }: ContentRowProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = scrollRef.current.clientWidth * 0.75
+      const scrollAmount = scrollRef.current.clientWidth * 0.75;
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
-      })
+      });
     }
-  }
+  };
 
   return (
     <div className="relative px-4 md:px-12 mb-6 md:mb-8">
@@ -68,17 +68,17 @@ export function ContentRow({ title, items, onCardClick }: ContentRowProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 function ContentCard({
   item,
   onClick,
 }: {
-  item: ContentItem
-  onClick?: (id: number) => void
+  item: ContentItem;
+  onClick?: (id: number) => void;
 }) {
-  const tag = item.tag
+  const tag = item.tag;
 
   return (
     <button
@@ -115,5 +115,5 @@ function ContentCard({
         </div>
       )}
     </button>
-  )
+  );
 }

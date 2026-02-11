@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { Home, Clapperboard } from "lucide-react"
-import { useConfig } from "@/lib/config-context"
+import { Home, Clapperboard } from "lucide-react";
+import { useConfig } from "@/lib/config-context";
 
 const iconMap = {
   Home,
   Clapperboard,
-} as const
+} as const;
 
 export function BottomNav() {
-  const config = useConfig()
-  const { items } = config.bottomNav
+  const config = useConfig();
+  const { items } = config.bottomNav;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#111111] border-t border-foreground/10">
       <div className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom,8px)]">
         {items.map((item) => {
-          const Icon = item.iconName ? iconMap[item.iconName] : null
+          const Icon = item.iconName ? iconMap[item.iconName] : null;
           return (
             <button
               key={item.label}
@@ -26,7 +26,10 @@ export function BottomNav() {
               {item.avatar ? (
                 <div
                   className="w-6 h-6 rounded flex items-center justify-center"
-                  style={{ background: "linear-gradient(135deg, #e50914 0%, #831010 100%)" }}
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #e50914 0%, #831010 100%)",
+                  }}
                 >
                   <span className="sr-only">Profile</span>
                 </div>
@@ -48,9 +51,9 @@ export function BottomNav() {
                 {item.label}
               </span>
             </button>
-          )
+          );
         })}
       </div>
     </nav>
-  )
+  );
 }

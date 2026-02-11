@@ -1,6 +1,6 @@
 "use client";
 
-import { Play, Info, Plus } from "lucide-react";
+import { Play, Plus } from "lucide-react";
 import Image from "next/image";
 import { useConfig } from "@/lib/config-context";
 
@@ -76,8 +76,8 @@ export function HeroSection({
               type="button"
               className="flex items-center gap-2 px-8 py-2.5 bg-foreground/30 text-foreground rounded font-semibold text-base hover:bg-foreground/20 transition-colors backdrop-blur-sm"
             >
-              <Info className="w-5 h-5" />
-              {hero.moreInfoButtonLabel}
+              <Plus className="w-5 h-5" />
+              {hero.myListButtonLabel}
             </button>
           </div>
         </div>

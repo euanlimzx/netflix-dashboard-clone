@@ -1,4 +1,4 @@
-import type { BrandConfig } from "./types"
+import type { BrandConfig } from "./types";
 
 export const netflixConfig: BrandConfig = {
   // ─── Navbar ───────────────────────────────────────────────
@@ -27,7 +27,6 @@ export const netflixConfig: BrandConfig = {
     genreTags: ["Comedy", "Family", "Heartwarming"],
     maturityRating: "TV-PG",
     playButtonLabel: "Play",
-    moreInfoButtonLabel: "More Info",
     myListButtonLabel: "My List",
   },
 
@@ -35,7 +34,12 @@ export const netflixConfig: BrandConfig = {
   bottomNav: {
     items: [
       { label: "Home", iconName: "Home", active: true, avatar: false },
-      { label: "New & Hot", iconName: "Clapperboard", active: false, avatar: false },
+      {
+        label: "New & Hot",
+        iconName: "Clapperboard",
+        active: false,
+        avatar: false,
+      },
       { label: "My Netflix", iconName: null, active: false, avatar: true },
     ],
   },
@@ -82,7 +86,12 @@ export const netflixConfig: BrandConfig = {
       headline: "A Fan-Favorite Family Comedy",
       synopsis:
         "A sharp-witted Texas mom navigates the chaos of raising her family after her husband leaves her for his dental hygienist. With humor and heart, Reba holds it all together.",
-      cast: ["Reba McEntire", "Melissa Peterman", "Steve Howey", "JoAnna Garcia"],
+      cast: [
+        "Reba McEntire",
+        "Melissa Peterman",
+        "Steve Howey",
+        "JoAnna Garcia",
+      ],
       genres: ["Sitcoms", "Family Comedies"],
       mood: "Witty",
     },
@@ -98,7 +107,12 @@ export const netflixConfig: BrandConfig = {
       headline: "New Season Coming This Fall",
       synopsis:
         "A rising high school football player from South LA is recruited to play for Beverly Hills High, forcing him to navigate two vastly different worlds while chasing his dream.",
-      cast: ["Daniel Ezra", "Samantha Logan", "Michael Evans Behling", "Greta Onieogou"],
+      cast: [
+        "Daniel Ezra",
+        "Samantha Logan",
+        "Michael Evans Behling",
+        "Greta Onieogou",
+      ],
       genres: ["Sports Dramas", "Teen TV Shows"],
       mood: "Inspiring",
     },
@@ -113,7 +127,12 @@ export const netflixConfig: BrandConfig = {
       headline: "Outrageously Dysfunctional. Endlessly Bingeable.",
       synopsis:
         "The Gallagher family survives on the South Side of Chicago with an absent mother and a drunk father, relying on each other and sheer resourcefulness to get by.",
-      cast: ["William H. Macy", "Emmy Rossum", "Jeremy Allen White", "Cameron Monaghan"],
+      cast: [
+        "William H. Macy",
+        "Emmy Rossum",
+        "Jeremy Allen White",
+        "Cameron Monaghan",
+      ],
       genres: ["Dark Comedies", "TV Dramas"],
       mood: "Irreverent",
     },
@@ -143,7 +162,12 @@ export const netflixConfig: BrandConfig = {
       headline: "The Final Season is Coming",
       synopsis:
         "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one very strange little girl.",
-      cast: ["Millie Bobby Brown", "Finn Wolfhard", "Winona Ryder", "David Harbour"],
+      cast: [
+        "Millie Bobby Brown",
+        "Finn Wolfhard",
+        "Winona Ryder",
+        "David Harbour",
+      ],
       genres: ["Sci-Fi TV", "Horror Series"],
       mood: "Dark",
     },
@@ -173,7 +197,12 @@ export const netflixConfig: BrandConfig = {
       headline: "A Critically Acclaimed Crime Thriller",
       synopsis:
         "A financial planner relocates his family to the Ozarks after a money laundering scheme goes wrong, forcing him to pay off a substantial debt to a Mexican drug lord.",
-      cast: ["Jason Bateman", "Laura Linney", "Julia Garner", "Skylar Gaertner"],
+      cast: [
+        "Jason Bateman",
+        "Laura Linney",
+        "Julia Garner",
+        "Skylar Gaertner",
+      ],
       genres: ["Crime TV Dramas", "TV Thrillers"],
       mood: "Dark",
     },
@@ -248,7 +277,12 @@ export const netflixConfig: BrandConfig = {
       headline: "By Order of the Peaky Blinders",
       synopsis:
         "A gangster family epic set in 1920s England, centering on a gang who sew razor blades into the peaks of their caps and their fierce leader Tommy Shelby.",
-      cast: ["Cillian Murphy", "Helen McCrory", "Paul Anderson", "Sophie Rundle"],
+      cast: [
+        "Cillian Murphy",
+        "Helen McCrory",
+        "Paul Anderson",
+        "Sophie Rundle",
+      ],
       genres: ["Crime TV Dramas", "Period Pieces"],
       mood: "Gritty",
     },
@@ -283,9 +317,9 @@ export const netflixConfig: BrandConfig = {
       mood: "Feel-Good",
     },
   ],
-}
+};
 
 // Helper: look up a show by id
 export function getShowById(id: number) {
-  return netflixConfig.shows.find((s) => s.id === id)
+  return netflixConfig.shows.find((s) => s.id === id);
 }

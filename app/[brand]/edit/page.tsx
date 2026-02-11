@@ -21,7 +21,7 @@ export default function EditPage() {
   );
   const [viewport, setViewport] = useState<ViewportMode>("mobile");
   const [shareUuid, setShareUuid] = useState<string | null>(null);
-  const [sidebarOpenKey, setSidebarOpenKey] = useState<string | null>("hero");
+  const [sidebarOpenKey, setSidebarOpenKey] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<MobileView>("editor");
   const isBrowserMobile = useIsMobile();
 
@@ -179,8 +179,11 @@ export default function EditPage() {
             <>
               <button
                 type="button"
-                className="flex-1 rounded-md border border-black bg-white px-4 py-3 text-[22px] font-bold text-gray-900 shadow-lg shadow-black/20 tracking-[-0.02em]"
-                style={{ fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif" }}
+                className="flex-1 rounded-md border border-black bg-white px-4 py-3 text-base font-bold text-gray-900 shadow-lg shadow-black/20 tracking-[-0.02em]"
+                style={{
+                  fontFamily:
+                    "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+                }}
                 onClick={() => setMobileView("preview")}
               >
                 Preview
@@ -196,8 +199,11 @@ export default function EditPage() {
           ) : (
             <button
               type="button"
-              className="flex-1 rounded-md bg-black px-4 py-3 text-[22px] font-bold text-white shadow-lg shadow-black/50 tracking-[-0.02em]"
-              style={{ fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif" }}
+              className="flex-1 rounded-md bg-black px-4 py-3 text-base font-bold text-white shadow-lg shadow-black/50 tracking-[-0.02em]"
+              style={{
+                fontFamily:
+                  "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+              }}
               onClick={() => setMobileView("editor")}
             >
               Back to editing

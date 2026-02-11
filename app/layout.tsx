@@ -12,8 +12,16 @@ const bebasNeue = Bebas_Neue({
 })
 
 export const metadata: Metadata = {
-  title: "Netflix",
-  description: "Watch TV shows and movies online. Stream smart on any device.",
+  title: "warmfuzzyfeelings.org",
+  description: "warmfuzzyfeelings.org",
+  openGraph: {
+    title: "warmfuzzyfeelings.org",
+    description: "warmfuzzyfeelings.org",
+  },
+  twitter: {
+    title: "warmfuzzyfeelings.org",
+    description: "warmfuzzyfeelings.org",
+  },
 }
 
 export const viewport: Viewport = {

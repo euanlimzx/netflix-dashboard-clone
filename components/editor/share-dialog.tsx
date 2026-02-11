@@ -102,7 +102,7 @@ export function ShareDialog({ uuid, brand, open, onClose }: ShareDialogProps) {
           <button
             type="button"
             onClick={handleOpenInNewTab}
-            className="flex items-center gap-2 px-4 py-2 bg-netflix-red hover:bg-netflix-red/90 rounded-md text-sm font-medium text-white transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-black hover:bg-black/90 rounded-md text-sm font-medium text-white transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             Open Preview

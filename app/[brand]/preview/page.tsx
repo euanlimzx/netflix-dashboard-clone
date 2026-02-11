@@ -1,80 +1,79 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react"
-import { Navbar } from "@/components/brands/netflix/navbar"
-import { HeroSection } from "@/components/brands/netflix/hero-section"
-import { ContentRow } from "@/components/brands/netflix/content-row"
-import { BottomNav } from "@/components/brands/netflix/bottom-nav"
-import { ShowModal } from "@/components/brands/netflix/show-modal"
-import { FullscreenPlayerOverlay } from "@/components/brands/netflix/fullscreen-player-overlay"
-import { NetflixIntro } from "@/components/brands/netflix/netflix-intro"
-import { ConfigProvider } from "@/lib/config-context"
-import { getDefaultConfig } from "@/lib/brands"
-import { useBrand } from "@/lib/brand-context"
-import type { BrandConfig } from "@/lib/brands"
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { Navbar } from "@/components/brands/netflix/navbar";
+import { HeroSection } from "@/components/brands/netflix/hero-section";
+import { ContentRow } from "@/components/brands/netflix/content-row";
+import { BottomNav } from "@/components/brands/netflix/bottom-nav";
+import { ShowModal } from "@/components/brands/netflix/show-modal";
+import { FullscreenPlayerOverlay } from "@/components/brands/netflix/fullscreen-player-overlay";
+import { NetflixIntro } from "@/components/brands/netflix/netflix-intro";
+import { ConfigProvider } from "@/lib/config-context";
+import { getDefaultConfig } from "@/lib/brands";
+import { useBrand } from "@/lib/brand-context";
+import type { BrandConfig } from "@/lib/brands";
 
-type EditorViewport = "mobile" | "desktop" | null
+type EditorViewport = "mobile" | "desktop" | null;
 
 export default function PreviewPage() {
-  const brand = useBrand()
-  const [config, setConfig] = useState<BrandConfig>(() => getDefaultConfig(brand))
-  const [selectedShowId, setSelectedShowId] = useState<number | null>(null)
-  const [editorViewport, setEditorViewport] = useState<EditorViewport>(null)
-  const [fullscreenPlayerOpen, setFullscreenPlayerOpen] = useState(false)
+  const brand = useBrand();
+  const [config, setConfig] = useState<BrandConfig>(() =>
+    getDefaultConfig(brand),
+  );
+  const [selectedShowId, setSelectedShowId] = useState<number | null>(null);
+  const [editorViewport, setEditorViewport] = useState<EditorViewport>(null);
+  const [fullscreenPlayerOpen, setFullscreenPlayerOpen] = useState(false);
 
   // Derive show data from current config (updates when config changes)
   const selectedShow = selectedShowId
-    ? config.shows.find((s) => s.id === selectedShowId) ?? null
-    : null
+    ? (config.shows.find((s) => s.id === selectedShowId) ?? null)
+    : null;
 
   // Listen for config updates from parent window (editor)
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
-      const data = event.data
+      const data = event.data;
       if (data?.type === "CONFIG_UPDATE" && data?.config) {
-        setConfig(data.config)
+        setConfig(data.config);
         if (data.viewport === "mobile" || data.viewport === "desktop") {
-          setEditorViewport(data.viewport)
+          setEditorViewport(data.viewport);
         } else {
-          setEditorViewport(null)
+          setEditorViewport(null);
         }
       }
     }
 
-    window.addEventListener("message", handleMessage)
+    window.addEventListener("message", handleMessage);
 
     // Notify parent that preview is ready
-    window.parent.postMessage({ type: "PREVIEW_READY" }, "*")
+    window.parent.postMessage({ type: "PREVIEW_READY" }, "*");
 
-    return () => window.removeEventListener("message", handleMessage)
-  }, [])
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   const handleCardClick = useCallback(
     (id: number) => {
-      setSelectedShowId(id)
+      setSelectedShowId(id);
       if (editorViewport !== null) {
-        const showIndex = config.shows.findIndex((s) => s.id === id)
+        const showIndex = config.shows.findIndex((s) => s.id === id);
         if (showIndex >= 0) {
           window.parent.postMessage(
             { type: "PREVIEW_CLICK", target: "show", showIndex },
-            "*"
-          )
+            "*",
+          );
         }
       }
     },
-    [editorViewport, config.shows]
-  )
+    [editorViewport, config.shows],
+  );
 
   const handleEditorNavbarClick = useCallback(() => {
-    window.parent.postMessage(
-      { type: "PREVIEW_CLICK", target: "navbar" },
-      "*"
-    )
-  }, [])
+    window.parent.postMessage({ type: "PREVIEW_CLICK", target: "navbar" }, "*");
+  }, []);
 
   const handleEditorHeroClick = useCallback(() => {
-    window.parent.postMessage({ type: "PREVIEW_CLICK", target: "hero" }, "*")
-  }, [])
+    window.parent.postMessage({ type: "PREVIEW_CLICK", target: "hero" }, "*");
+  }, []);
 
   // Resolve show IDs to show data for each content row
   const resolvedRows = useMemo(() => {
@@ -83,8 +82,8 @@ export default function PreviewPage() {
       items: row.showIds
         .map((id) => config.shows.find((s) => s.id === id))
         .filter((show): show is BrandConfig["shows"][0] => show !== undefined),
-    }))
-  }, [config.contentRows, config.shows])
+    }));
+  }, [config.contentRows, config.shows]);
 
   // For now, always render Netflix components (will add brand switching later)
   return (
@@ -120,8 +119,8 @@ export default function PreviewPage() {
           show={selectedShow}
           onClose={() => setSelectedShowId(null)}
           onPlayClick={() => {
-            setSelectedShowId(null)
-            setFullscreenPlayerOpen(true)
+            setSelectedShowId(null);
+            setFullscreenPlayerOpen(true);
           }}
         />
         <FullscreenPlayerOverlay
@@ -130,5 +129,5 @@ export default function PreviewPage() {
         />
       </main>
     </ConfigProvider>
-  )
+  );
 }

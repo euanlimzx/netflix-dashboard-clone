@@ -104,7 +104,7 @@ export function PreviewFrame({
   // Mobile: use aspect-ratio like LandingPreview for reliable sizing
   return (
     <div className="flex w-full h-full items-center justify-center">
-      <div className="w-full max-w-[260px] sm:max-w-[300px] shrink-0">
+      <div className="w-full max-w-[300px] sm:max-w-[340px] shrink-0">
         <div className="relative rounded-[2.5rem] bg-zinc-900 p-2 shadow-2xl">
           <div className="absolute left-1/2 top-0 z-10 h-6 w-24 -translate-x-1/2 rounded-b-2xl bg-zinc-900" />
           <div className="relative overflow-hidden rounded-[2rem] bg-black aspect-[9/19.5]">

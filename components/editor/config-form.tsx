@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import { useRef, useEffect, forwardRef } from "react"
-import { ChevronDown } from "lucide-react"
-import type { BrandConfig } from "@/lib/brands"
-import { ImageUpload } from "./image-upload"
+import { useRef, useEffect, forwardRef } from "react";
+import { ChevronDown } from "lucide-react";
+import type { BrandConfig } from "@/lib/brands";
+import { ImageUpload } from "./image-upload";
 
 interface ConfigFormProps {
-  config: BrandConfig
-  onChange: (config: BrandConfig) => void
-  openSectionKey?: string | null
-  onOpenSectionKeyChange?: (key: string | null) => void
+  config: BrandConfig;
+  onChange: (config: BrandConfig) => void;
+  openSectionKey?: string | null;
+  onOpenSectionKeyChange?: (key: string | null) => void;
 }
 
 // Collapsible section component (controlled by openSectionKey when provided)
 const Section = forwardRef<
   HTMLDivElement,
   {
-    title: string
-    sectionKey: string
-    openSectionKey: string | null
-    onOpenSectionKeyChange: (key: string | null) => void
-    isOpenOverride?: boolean
-    onToggleOverride?: () => void
-    children: React.ReactNode
+    title: string;
+    sectionKey: string;
+    openSectionKey: string | null;
+    onOpenSectionKeyChange: (key: string | null) => void;
+    isOpenOverride?: boolean;
+    onToggleOverride?: () => void;
+    children: React.ReactNode;
   }
 >(function Section(
   {
@@ -34,17 +34,16 @@ const Section = forwardRef<
     onToggleOverride,
     children,
   },
-  ref
+  ref,
 ) {
-  const isOpen =
-    isOpenOverride ?? openSectionKey === sectionKey
+  const isOpen = isOpenOverride ?? openSectionKey === sectionKey;
   const handleToggle = () => {
     if (onToggleOverride) {
-      onToggleOverride()
+      onToggleOverride();
     } else {
-      onOpenSectionKeyChange(openSectionKey === sectionKey ? null : sectionKey)
+      onOpenSectionKeyChange(openSectionKey === sectionKey ? null : sectionKey);
     }
-  }
+  };
 
   return (
     <div ref={ref} className="bg-white">
@@ -53,7 +52,12 @@ const Section = forwardRef<
         onClick={handleToggle}
         className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors"
       >
-        <span className="font-bold text-gray-900 text-[22px] tracking-[-0.02em]" style={{ fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+        <span
+          className="font-bold text-gray-900 text-[22px] tracking-[-0.02em]"
+          style={{
+            fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+          }}
+        >
           {title}
         </span>
         <ChevronDown
@@ -64,8 +68,8 @@ const Section = forwardRef<
       </button>
       {isOpen && <div className="px-6 pb-6 space-y-4 bg-white">{children}</div>}
     </div>
-  )
-})
+  );
+});
 
 // Reusable input components
 function TextInput({
@@ -74,10 +78,10 @@ function TextInput({
   onChange,
   placeholder,
 }: {
-  label: string
-  value: string
-  onChange: (value: string) => void
-  placeholder?: string
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
 }) {
   return (
     <div>
@@ -92,7 +96,7 @@ function TextInput({
         className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
       />
     </div>
-  )
+  );
 }
 
 function TextArea({
@@ -102,11 +106,11 @@ function TextArea({
   rows = 3,
   placeholder,
 }: {
-  label: string
-  value: string
-  onChange: (value: string) => void
-  rows?: number
-  placeholder?: string
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  rows?: number;
+  placeholder?: string;
 }) {
   return (
     <div>
@@ -121,36 +125,42 @@ function TextArea({
         className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300 resize-none"
       />
     </div>
-  )
+  );
 }
 
 // Collapsible show item component (controlled by openSectionKey)
 const ShowItem = forwardRef<
   HTMLDivElement,
   {
-    show: BrandConfig["shows"][0]
-    index: number
-    itemKey: string
-    openSectionKey: string | null
-    onOpenSectionKeyChange: (key: string | null) => void
-    onUpdate: (index: number, updates: Partial<BrandConfig["shows"][0]>) => void
+    show: BrandConfig["shows"][0];
+    index: number;
+    itemKey: string;
+    openSectionKey: string | null;
+    onOpenSectionKeyChange: (key: string | null) => void;
+    onUpdate: (
+      index: number,
+      updates: Partial<BrandConfig["shows"][0]>,
+    ) => void;
   }
 >(function ShowItem(
   { show, index, itemKey, openSectionKey, onOpenSectionKeyChange, onUpdate },
-  ref
+  ref,
 ) {
-  const isOpen = openSectionKey === itemKey
+  const isOpen = openSectionKey === itemKey;
 
   return (
     <div ref={ref} className="bg-white">
       <button
         type="button"
-        onClick={() =>
-          onOpenSectionKeyChange(isOpen ? null : itemKey)
-        }
+        onClick={() => onOpenSectionKeyChange(isOpen ? null : itemKey)}
         className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors"
       >
-        <span className="font-bold text-gray-900 text-[19px] tracking-[-0.02em]" style={{ fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+        <span
+          className="font-bold text-gray-900 text-[19px] tracking-[-0.02em]"
+          style={{
+            fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+          }}
+        >
           Show {index + 1}
         </span>
         <ChevronDown
@@ -191,7 +201,10 @@ const ShowItem = forwardRef<
             value={show.cast.join(", ")}
             onChange={(v) =>
               onUpdate(index, {
-                cast: v.split(",").map((s) => s.trim()).filter(Boolean),
+                cast: v
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter(Boolean),
               })
             }
           />
@@ -201,7 +214,10 @@ const ShowItem = forwardRef<
             value={show.genres.join(", ")}
             onChange={(v) =>
               onUpdate(index, {
-                genres: v.split(",").map((s) => s.trim()).filter(Boolean),
+                genres: v
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter(Boolean),
               })
             }
           />
@@ -214,8 +230,8 @@ const ShowItem = forwardRef<
         </div>
       )}
     </div>
-  )
-})
+  );
+});
 
 export function ConfigForm({
   config,
@@ -223,50 +239,56 @@ export function ConfigForm({
   openSectionKey = null,
   onOpenSectionKeyChange = () => {},
 }: ConfigFormProps) {
-  const navbarRef = useRef<HTMLDivElement>(null)
-  const heroRef = useRef<HTMLDivElement>(null)
-  const fullscreenMessageRef = useRef<HTMLDivElement>(null)
-  const showsDatabaseRef = useRef<HTMLDivElement>(null)
-  const showItemRefs = useRef<Map<number, HTMLDivElement | null>>(new Map())
+  const navbarRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const fullscreenMessageRef = useRef<HTMLDivElement>(null);
+  const showsDatabaseRef = useRef<HTMLDivElement>(null);
+  const showItemRefs = useRef<Map<number, HTMLDivElement | null>>(new Map());
 
   // Scroll the opened section into view when openSectionKey changes
   useEffect(() => {
-    if (!openSectionKey) return
+    if (!openSectionKey) return;
     if (openSectionKey === "navbar") {
-      navbarRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+      navbarRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
     } else if (openSectionKey === "hero") {
-      heroRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+      heroRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } else if (openSectionKey === "fullscreen-message") {
-      fullscreenMessageRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+      fullscreenMessageRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
     } else if (openSectionKey.startsWith("show-")) {
-      const index = parseInt(openSectionKey.replace("show-", ""), 10)
+      const index = parseInt(openSectionKey.replace("show-", ""), 10);
       if (!Number.isNaN(index)) {
         showItemRefs.current.get(index)?.scrollIntoView({
           behavior: "smooth",
           block: "nearest",
-        })
+        });
       }
     }
-  }, [openSectionKey])
+  }, [openSectionKey]);
   // Helper to update nested config
   const update = <K extends keyof BrandConfig>(
     section: K,
-    updates: Partial<BrandConfig[K]>
+    updates: Partial<BrandConfig[K]>,
   ) => {
     onChange({
       ...config,
       [section]: { ...config[section], ...updates },
-    })
-  }
+    });
+  };
 
   const updateShow = (
     index: number,
-    updates: Partial<BrandConfig["shows"][0]>
+    updates: Partial<BrandConfig["shows"][0]>,
   ) => {
-    const newShows = [...config.shows]
-    newShows[index] = { ...newShows[index], ...updates }
-    onChange({ ...config, shows: newShows })
-  }
+    const newShows = [...config.shows];
+    newShows[index] = { ...newShows[index], ...updates };
+    onChange({ ...config, shows: newShows });
+  };
 
   return (
     <div className="h-full overflow-y-auto bg-white">
@@ -288,18 +310,18 @@ export function ConfigForm({
       {/* Hero Section - Limited Fields */}
       <Section
         ref={heroRef}
-        title="Hero Section"
+        title="Main Section"
         sectionKey="hero"
         openSectionKey={openSectionKey}
         onOpenSectionKeyChange={onOpenSectionKeyChange}
       >
         <ImageUpload
-          label="Desktop Hero Image"
+          label="Main Image (Desktop)"
           value={config.hero.image}
           onChange={(v) => update("hero", { image: v })}
         />
         <ImageUpload
-          label="Mobile Hero Image"
+          label="Main Image (Mobile)"
           value={config.hero.mobileImage}
           onChange={(v) => update("hero", { mobileImage: v })}
         />
@@ -344,11 +366,14 @@ export function ConfigForm({
           placeholder="My List"
         />
         <TextInput
-          label="Mobile genre tags (comma-separated)"
+          label="Genre tags for mobile (comma-separated)"
           value={config.hero.genreTags.join(", ")}
           onChange={(v) =>
             update("hero", {
-              genreTags: v.split(",").map((s) => s.trim()).filter(Boolean),
+              genreTags: v
+                .split(",")
+                .map((s) => s.trim())
+                .filter(Boolean),
             })
           }
           placeholder="Comedy, Family, Heartwarming"
@@ -358,13 +383,13 @@ export function ConfigForm({
       {/* Fullscreen Play Message */}
       <Section
         ref={fullscreenMessageRef}
-        title="Fullscreen Play Message"
+        title="Long Message"
         sectionKey="fullscreen-message"
         openSectionKey={openSectionKey}
         onOpenSectionKeyChange={onOpenSectionKeyChange}
       >
         <TextArea
-          label="Message (shown after intro; line breaks are kept)"
+          label="Message shown after you click the play button"
           value={config.modal.fullscreenMessage ?? "Hello"}
           onChange={(v) => update("modal", { fullscreenMessage: v })}
           rows={4}
@@ -388,7 +413,7 @@ export function ConfigForm({
             openSectionKey === "shows-database" ||
               (openSectionKey !== null && openSectionKey.startsWith("show-"))
               ? null
-              : "shows-database"
+              : "shows-database",
           )
         }
       >
@@ -397,7 +422,7 @@ export function ConfigForm({
             <ShowItem
               key={show.id}
               ref={(el) => {
-                showItemRefs.current.set(index, el)
+                showItemRefs.current.set(index, el);
               }}
               show={show}
               index={index}
@@ -410,5 +435,5 @@ export function ConfigForm({
         </div>
       </Section>
     </div>
-  )
+  );
 }
