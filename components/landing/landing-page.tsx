@@ -8,7 +8,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { useIsMobile } from "@/components/ui/use-mobile";
 
@@ -63,21 +62,20 @@ export function LandingPage() {
 
       {/* Mobile confirmation modal */}
       <Dialog open={mobileModalOpen} onOpenChange={setMobileModalOpen}>
-        <DialogContent className="rounded-none border-0 bg-black p-6 text-white max-w-[min(calc(100vw-2rem),360px)] [&>button]:hidden">
-          <DialogHeader>
-            <DialogTitle className="text-white text-left">
+        <DialogContent className="rounded-none border-0 bg-black p-6 text-white max-w-[min(calc(100vw-2rem),360px)] [&>button:last-child]:hidden">
+          <DialogHeader className="text-center">
+            <DialogTitle className="text-white text-center">
               Editing experience is unoptimized for mobile
             </DialogTitle>
-            <DialogDescription className="text-zinc-300 text-left mt-2">
-              Proceed?
-            </DialogDescription>
           </DialogHeader>
-          <button
-            onClick={handleProceed}
-            className="mt-4 w-full py-3 bg-white text-black font-medium rounded-none hover:bg-zinc-100 transition-colors"
-          >
-            Yes
-          </button>
+          <div className="mt-4 px-4">
+            <button
+              onClick={handleProceed}
+              className="block w-full py-3 !bg-white !text-black font-medium !rounded-none border-0 text-center hover:bg-zinc-100 transition-colors"
+            >
+              Proceed?
+            </button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
