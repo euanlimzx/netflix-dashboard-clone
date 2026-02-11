@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, forwardRef } from "react";
+import { useRef, useEffect, useState, forwardRef } from "react";
 import { ChevronDown, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import type { BrandConfig } from "@/lib/brands";
@@ -100,6 +100,50 @@ function TextInput({
   );
 }
 
+// Comma-separated input: stores raw string while typing, parses to array only on blur
+function CommaSeparatedInput({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string[];
+  onChange: (value: string[]) => void;
+  placeholder?: string;
+}) {
+  const [draft, setDraft] = useState(value.join(", "));
+
+  // Sync draft when value changes (e.g. switching to a different show)
+  useEffect(() => {
+    setDraft(value.join(", "));
+  }, [value]);
+
+  const handleBlur = () => {
+    const parsed = draft
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    onChange(parsed);
+  };
+
+  return (
+    <div>
+      <label className="block text-base font-medium text-gray-600 mb-1.5">
+        {label}
+      </label>
+      <input
+        type="text"
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={handleBlur}
+        placeholder={placeholder}
+        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
+      />
+    </div>
+  );
+}
+
 function TextArea({
   label,
   value,
@@ -143,6 +187,8 @@ const ShowItem = forwardRef<
       updates: Partial<BrandConfig["shows"][0]>,
     ) => void;
     canHide: boolean;
+    /** When closing, set this instead of null so parent section stays open */
+    parentSectionKey?: string;
   }
 >(function ShowItem(
   {
@@ -153,10 +199,17 @@ const ShowItem = forwardRef<
     onOpenSectionKeyChange,
     onUpdate,
     canHide,
+    parentSectionKey,
   },
   ref,
 ) {
   const isOpen = openSectionKey === itemKey;
+
+  const handleToggle = () => {
+    onOpenSectionKeyChange(
+      isOpen ? (parentSectionKey ?? null) : itemKey,
+    );
+  };
   const isVisible = show.visible !== false;
 
   const handleVisibilityToggle = (e: React.MouseEvent) => {
@@ -171,56 +224,48 @@ const ShowItem = forwardRef<
   return (
     <div ref={ref} className="bg-white">
       <div className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={handleVisibilityToggle}
-            className={`p-1 rounded transition-colors ${
-              isVisible
-                ? canHide
-                  ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                  : "text-gray-300 cursor-not-allowed"
-                : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
-            }`}
-            title={
-              isVisible
-                ? canHide
-                  ? "Hide show"
-                  : "Minimum 6 shows required"
-                : "Show in preview"
-            }
-          >
-            {isVisible ? (
-              <Eye className="w-5 h-5" />
-            ) : (
-              <EyeOff className="w-5 h-5" />
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={() => onOpenSectionKeyChange(isOpen ? null : itemKey)}
-            className="flex-1 text-left"
-          >
-            <span
-              className={`font-bold text-[19px] tracking-[-0.02em] ${
-                isVisible ? "text-gray-900" : "text-gray-400"
-              }`}
-              style={{
-                fontFamily:
-                  "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
-              }}
-            >
-              Show {index + 1}
-            </span>
-          </button>
-        </div>
         <button
           type="button"
-          onClick={() => onOpenSectionKeyChange(isOpen ? null : itemKey)}
-          className="p-1"
+          onClick={handleVisibilityToggle}
+          className={`p-1 rounded transition-colors shrink-0 ${
+            isVisible
+              ? canHide
+                ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                : "text-gray-300 cursor-not-allowed"
+              : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+          }`}
+          title={
+            isVisible
+              ? canHide
+                ? "Hide show"
+                : "Minimum 6 shows required"
+              : "Show in preview"
+          }
         >
+          {isVisible ? (
+            <Eye className="w-5 h-5" />
+          ) : (
+            <EyeOff className="w-5 h-5" />
+          )}
+        </button>
+        <button
+          type="button"
+          onClick={handleToggle}
+          className="flex-1 flex items-center justify-between min-w-0 px-3 text-left"
+        >
+          <span
+            className={`font-bold text-[19px] tracking-[-0.02em] truncate ${
+              isVisible ? "text-gray-900" : "text-gray-400"
+            }`}
+            style={{
+              fontFamily:
+                "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+            }}
+          >
+            Show {index + 1}
+          </span>
           <ChevronDown
-            className={`w-5 h-5 text-gray-900 transition-transform ${
+            className={`w-5 h-5 shrink-0 text-gray-900 transition-transform ${
               isOpen ? "" : "-rotate-90"
             }`}
           />
@@ -255,30 +300,16 @@ const ShowItem = forwardRef<
             placeholder="e.g. you told me that stupid joke and i still don't get it but watching u laugh made my whole year"
           />
 
-          <TextInput
+          <CommaSeparatedInput
             label="Cast (comma-separated)"
-            value={show.cast.join(", ")}
-            onChange={(v) =>
-              onUpdate(index, {
-                cast: v
-                  .split(",")
-                  .map((s) => s.trim())
-                  .filter(Boolean),
-              })
-            }
+            value={show.cast}
+            onChange={(v) => onUpdate(index, { cast: v })}
           />
 
-          <TextInput
+          <CommaSeparatedInput
             label="Genres (comma-separated)"
-            value={show.genres.join(", ")}
-            onChange={(v) =>
-              onUpdate(index, {
-                genres: v
-                  .split(",")
-                  .map((s) => s.trim())
-                  .filter(Boolean),
-              })
-            }
+            value={show.genres}
+            onChange={(v) => onUpdate(index, { genres: v })}
           />
 
           <TextInput
@@ -433,17 +464,10 @@ export function ConfigForm({
           onChange={(v) => update("hero", { myListButtonLabel: v })}
           placeholder="My List"
         />
-        <TextInput
+        <CommaSeparatedInput
           label="Genre tags for mobile (comma-separated)"
-          value={config.hero.genreTags.join(", ")}
-          onChange={(v) =>
-            update("hero", {
-              genreTags: v
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean),
-            })
-          }
+          value={config.hero.genreTags}
+          onChange={(v) => update("hero", { genreTags: v })}
           placeholder="Adventurous, Goofy, Forever Yours"
         />
       </Section>
@@ -499,6 +523,7 @@ export function ConfigForm({
               onOpenSectionKeyChange={onOpenSectionKeyChange}
               onUpdate={updateShow}
               canHide={canHide}
+              parentSectionKey="shows-database"
             />
           ))}
         </div>

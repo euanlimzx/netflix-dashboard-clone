@@ -195,8 +195,8 @@ export function ShowModal({ show, onClose, onPlayClick }: ShowModalProps) {
             <p className="text-foreground/60">
               <span className="text-foreground/40">{labels.castLabel} </span>
               <span className="text-foreground/80">
-                {show.cast.slice(0, 3).join(", ")}
-                {show.cast.length > 3 && (
+                {show.cast.filter(Boolean).slice(0, 3).join(", ")}
+                {show.cast.filter(Boolean).length > 3 && (
                   <>
                     ,{" "}
                     <span className="italic text-foreground/50 cursor-pointer hover:underline">
@@ -209,7 +209,7 @@ export function ShowModal({ show, onClose, onPlayClick }: ShowModalProps) {
             <p className="text-foreground/60">
               <span className="text-foreground/40">{labels.genresLabel} </span>
               <span className="text-foreground/80">
-                {show.genres.join(", ")}
+                {show.genres.filter(Boolean).join(", ")}
               </span>
             </p>
             <p className="text-foreground/60">

@@ -147,8 +147,8 @@ export function HeroSection({
                 {hero.title}
               </h1>
               <p className="text-sm text-foreground/70 tracking-wide">
-                {hero.genreTags.map((tag, i) => (
-                  <span key={tag}>
+                {hero.genreTags.filter(Boolean).map((tag, i) => (
+                  <span key={`${tag}-${i}`}>
                     {i > 0 && (
                       <span className="mx-2 text-netflix-red">{"•"}</span>
                     )}
