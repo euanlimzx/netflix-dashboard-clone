@@ -71,7 +71,16 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
+        sans: [
+          'SF Pro Display',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'sans-serif',
+        ],
         bebas: ['var(--font-bebas)', 'sans-serif'],
+        coolvetica: ['Coolvetica Light', 'sans-serif'],
       },
       keyframes: {
         'accordion-down': {

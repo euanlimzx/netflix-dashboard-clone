@@ -1,11 +1,10 @@
 import React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter, Bebas_Neue } from "next/font/google"
+import { Bebas_Neue } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 
 import "./globals.css"
 
-const _inter = Inter({ subsets: ["latin"] })
 const bebasNeue = Bebas_Neue({
   weight: "400",
   subsets: ["latin"],
@@ -28,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={bebasNeue.variable}>
-      <body className="font-sans antialiased bg-background text-foreground overflow-x-hidden">
+      <body className="antialiased bg-background text-foreground overflow-x-hidden font-sans">
         {children}
         <Analytics />
       </body>
