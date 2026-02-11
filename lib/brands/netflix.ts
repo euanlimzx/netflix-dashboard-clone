@@ -1,4 +1,6 @@
-export const siteConfig = {
+import type { BrandConfig } from "./types"
+
+export const netflixConfig: BrandConfig = {
   // ─── Navbar ───────────────────────────────────────────────
   navbar: {
     logo: "NETFLIX",
@@ -18,7 +20,7 @@ export const siteConfig = {
     image: "/images/hero-bg.jpg",
     mobileImage: "/images/hero-bg.jpg",
     imageAlt: "Featured show hero background",
-    titleFont: "default" as const,
+    titleFont: "default",
     title: "Young Sheldon",
     description:
       'Brilliant yet awkward 9-year-old Sheldon Cooper lands in high school where his smarts leave everyone stumped in this "The Big Bang Theory" spin-off.',
@@ -32,14 +34,13 @@ export const siteConfig = {
   // ─── Bottom Navigation (mobile) ──────────────────────────
   bottomNav: {
     items: [
-      { label: "Home", iconName: "Home" as const, active: true, avatar: false },
-      { label: "New & Hot", iconName: "Clapperboard" as const, active: false, avatar: false },
+      { label: "Home", iconName: "Home", active: true, avatar: false },
+      { label: "New & Hot", iconName: "Clapperboard", active: false, avatar: false },
       { label: "My Netflix", iconName: null, active: false, avatar: true },
     ],
   },
 
   // ─── Content Rows ────────────────────────────────────────
-  // Each row references shows by ID - data is pulled from the shows database
   contentRows: [
     {
       title: "Your Next Watch",
@@ -68,9 +69,6 @@ export const siteConfig = {
   },
 
   // ─── Show Details Database ───────────────────────────────
-  // Each show's full metadata for the modal, keyed by id.
-  // To add a new show, add an entry here AND reference its id
-  // in the contentRows above.
   shows: [
     {
       id: 1,
@@ -284,90 +282,9 @@ export const siteConfig = {
       mood: "Feel-Good",
     },
   ],
-} as const
-
-// ─── Derived Types ─────────────────────────────────────────
-
-export type NavLink = (typeof siteConfig.navbar.navLinks)[number]
-export type BottomNavItem = (typeof siteConfig.bottomNav.items)[number]
-export type ContentRowConfig = (typeof siteConfig.contentRows)[number]
-export type ShowDetail = (typeof siteConfig.shows)[number]
+}
 
 // Helper: look up a show by id
-export function getShowById(id: number): ShowDetail | undefined {
-  return siteConfig.shows.find((s) => s.id === id)
-}
-
-// ─── Mutable Config Type (for editing) ────────────────────
-
-export type SiteConfig = {
-  navbar: {
-    logo: string
-    profileColor: string
-    navLinks: Array<{ label: string; active: boolean }>
-  }
-  hero: {
-    image: string
-    mobileImage: string
-    imageAlt: string
-    titleFont: "default" | "bebas"
-    title: string
-    description: string
-    genreTags: string[]
-    maturityRating: string
-    playButtonLabel: string
-    moreInfoButtonLabel: string
-    myListButtonLabel: string
-  }
-  bottomNav: {
-    items: Array<{
-      label: string
-      iconName: "Home" | "Clapperboard" | null
-      active: boolean
-      avatar: boolean
-    }>
-  }
-  contentRows: Array<{
-    title: string
-    showIds: number[]
-  }>
-  modal: {
-    seriesBadgeLabel: string
-    playButtonLabel: string
-    addToListLabel: string
-    likeLabel: string
-    volumeLabel: string
-    closeLabel: string
-    castLabel: string
-    genresLabel: string
-    moodLabel: string
-    moreLabel: string
-    hdBadge: string
-    adBadge: string
-  }
-  shows: Array<{
-    id: number
-    title: string
-    image: string
-    tag?: string
-    matchPercent: number
-    year: number
-    rating: string
-    episodes: string
-    headline: string
-    synopsis: string
-    cast: string[]
-    genres: string[]
-    mood: string
-  }>
-}
-
-// Deep clone helper
-function deepClone<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj))
-}
-
-// Create a mutable copy of the default config
-export function getDefaultConfig(): SiteConfig {
-  return deepClone(siteConfig) as unknown as SiteConfig
+export function getShowById(id: number) {
+  return netflixConfig.shows.find((s) => s.id === id)
 }

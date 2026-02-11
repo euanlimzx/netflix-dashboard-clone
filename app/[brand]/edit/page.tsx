@@ -6,14 +6,17 @@ import { ConfigForm } from "@/components/editor/config-form"
 import { PreviewFrame } from "@/components/editor/preview-frame"
 import { CreateButton } from "@/components/editor/create-button"
 import { ShareDialog } from "@/components/editor/share-dialog"
-import { getDefaultConfig, SiteConfig } from "@/lib/config-context"
+import { getDefaultConfig } from "@/lib/brands"
+import { useBrand } from "@/lib/brand-context"
 import { useIsMobile } from "@/hooks/use-mobile"
+import type { BrandConfig } from "@/lib/brands"
 
 type ViewportMode = "mobile" | "desktop"
 type MobileView = "editor" | "preview"
 
 export default function EditPage() {
-  const [config, setConfig] = useState<SiteConfig>(getDefaultConfig)
+  const brand = useBrand()
+  const [config, setConfig] = useState<BrandConfig>(() => getDefaultConfig(brand))
   const [viewport, setViewport] = useState<ViewportMode>("mobile")
   const [shareUuid, setShareUuid] = useState<string | null>(null)
   const [sidebarOpenKey, setSidebarOpenKey] = useState<string | null>("hero")
@@ -50,7 +53,7 @@ export default function EditPage() {
             <h1 className="text-lg font-semibold text-foreground">
               Edit Configuration
             </h1>
-            <CreateButton config={config} onSuccess={setShareUuid} />
+            <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
           </div>
           <div className="flex-1 overflow-hidden">
             <ConfigForm
@@ -96,13 +99,14 @@ export default function EditPage() {
             </div>
           </div>
           <div className="flex-1 p-4">
-            <PreviewFrame config={config} viewport={viewport} />
+            <PreviewFrame config={config} viewport={viewport} brand={brand} />
           </div>
         </div>
 
         {/* Share Dialog */}
         <ShareDialog
           uuid={shareUuid || ""}
+          brand={brand}
           open={shareUuid !== null}
           onClose={() => setShareUuid(null)}
         />
@@ -119,7 +123,7 @@ export default function EditPage() {
             <h1 className="text-base font-semibold text-foreground">
               Edit Configuration
             </h1>
-            <CreateButton config={config} onSuccess={setShareUuid} />
+            <CreateButton config={config} brand={brand} onSuccess={setShareUuid} />
           </div>
           <div className="flex-1 overflow-auto px-4 py-4">
             <ConfigForm
@@ -169,7 +173,7 @@ export default function EditPage() {
                 back to the Mobile view.
               </div>
             ) : (
-              <PreviewFrame config={config} viewport={viewport} />
+              <PreviewFrame config={config} viewport={viewport} brand={brand} />
             )}
           </div>
         </div>
@@ -193,6 +197,7 @@ export default function EditPage() {
       {/* Share Dialog */}
       <ShareDialog
         uuid={shareUuid || ""}
+        brand={brand}
         open={shareUuid !== null}
         onClose={() => setShareUuid(null)}
       />

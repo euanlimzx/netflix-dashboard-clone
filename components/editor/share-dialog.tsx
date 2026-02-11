@@ -3,21 +3,23 @@
 import { useState } from "react"
 import { Check, Copy, ExternalLink, X } from "lucide-react"
 import { toast } from "sonner"
+import type { Brand } from "@/lib/brands"
 
 interface ShareDialogProps {
   uuid: string
+  brand: Brand
   open: boolean
   onClose: () => void
 }
 
-export function ShareDialog({ uuid, open, onClose }: ShareDialogProps) {
+export function ShareDialog({ uuid, brand, open, onClose }: ShareDialogProps) {
   const [copied, setCopied] = useState(false)
 
   if (!open) return null
 
   const previewUrl = typeof window !== "undefined"
-    ? `${window.location.origin}/preview/${uuid}`
-    : `/preview/${uuid}`
+    ? `${window.location.origin}/${brand}/preview/${uuid}`
+    : `/${brand}/preview/${uuid}`
 
   const handleCopy = async () => {
     try {

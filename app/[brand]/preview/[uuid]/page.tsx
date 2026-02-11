@@ -1,13 +1,19 @@
 import { notFound } from "next/navigation"
 import { loadPreview } from "@/lib/preview-storage"
+import { isValidBrand } from "@/lib/brands"
 import { SavedPreviewClient } from "./client"
 
 interface Props {
-  params: Promise<{ uuid: string }>
+  params: Promise<{ brand: string; uuid: string }>
 }
 
 export default async function SavedPreviewPage({ params }: Props) {
-  const { uuid } = await params
+  const { brand, uuid } = await params
+
+  // Validate brand
+  if (!isValidBrand(brand)) {
+    notFound()
+  }
 
   // Validate UUID format
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -15,7 +21,8 @@ export default async function SavedPreviewPage({ params }: Props) {
     notFound()
   }
 
-  const config = await loadPreview(uuid)
+  // Load preview with brand validation
+  const config = await loadPreview(uuid, brand)
 
   if (!config) {
     notFound()

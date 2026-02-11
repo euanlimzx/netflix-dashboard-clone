@@ -2,12 +2,12 @@
 
 import { useRef, useEffect, forwardRef } from "react"
 import { ChevronDown } from "lucide-react"
-import { SiteConfig } from "@/lib/config-context"
+import type { BrandConfig } from "@/lib/brands"
 import { ImageUpload } from "./image-upload"
 
 interface ConfigFormProps {
-  config: SiteConfig
-  onChange: (config: SiteConfig) => void
+  config: BrandConfig
+  onChange: (config: BrandConfig) => void
   openSectionKey?: string | null
   onOpenSectionKeyChange?: (key: string | null) => void
 }
@@ -123,12 +123,12 @@ function TextArea({
 const ShowItem = forwardRef<
   HTMLDivElement,
   {
-    show: SiteConfig["shows"][0]
+    show: BrandConfig["shows"][0]
     index: number
     itemKey: string
     openSectionKey: string | null
     onOpenSectionKeyChange: (key: string | null) => void
-    onUpdate: (index: number, updates: Partial<SiteConfig["shows"][0]>) => void
+    onUpdate: (index: number, updates: Partial<BrandConfig["shows"][0]>) => void
   }
 >(function ShowItem(
   { show, index, itemKey, openSectionKey, onOpenSectionKeyChange, onUpdate },
@@ -239,9 +239,9 @@ export function ConfigForm({
     }
   }, [openSectionKey])
   // Helper to update nested config
-  const update = <K extends keyof SiteConfig>(
+  const update = <K extends keyof BrandConfig>(
     section: K,
-    updates: Partial<SiteConfig[K]>
+    updates: Partial<BrandConfig[K]>
   ) => {
     onChange({
       ...config,
@@ -251,7 +251,7 @@ export function ConfigForm({
 
   const updateShow = (
     index: number,
-    updates: Partial<SiteConfig["shows"][0]>
+    updates: Partial<BrandConfig["shows"][0]>
   ) => {
     const newShows = [...config.shows]
     newShows[index] = { ...newShows[index], ...updates }

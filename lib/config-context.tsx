@@ -1,20 +1,22 @@
 "use client"
 
 import { createContext, useContext, ReactNode } from "react"
-import { siteConfig, getDefaultConfig } from "./config"
-import type { SiteConfig } from "./config"
+import { getDefaultConfig } from "./brands"
+import type { Brand, BrandConfig } from "./brands"
 
 // Re-export for convenience
-export type { SiteConfig }
-export { getDefaultConfig }
+export type { BrandConfig }
 
 // Context for providing config to components
-const ConfigContext = createContext<SiteConfig | null>(null)
+const ConfigContext = createContext<BrandConfig | null>(null)
 
-// Hook to get config - falls back to siteConfig if no context provided
-export function useConfig(): SiteConfig {
+// Hook to get config - throws if no context provided
+export function useConfig(): BrandConfig {
   const context = useContext(ConfigContext)
-  return context ?? (siteConfig as unknown as SiteConfig)
+  if (!context) {
+    throw new Error("useConfig must be used within a ConfigProvider")
+  }
+  return context
 }
 
 // Provider component for wrapping preview with custom config
@@ -22,7 +24,7 @@ export function ConfigProvider({
   config,
   children,
 }: {
-  config: SiteConfig
+  config: BrandConfig
   children: ReactNode
 }) {
   return (
@@ -34,8 +36,8 @@ export function ConfigProvider({
  * Checks if a config has any changes from the defaults
  * Only compares editable fields (navbar.logo, hero.*, shows[].*)
  */
-export function hasChanges(config: SiteConfig): boolean {
-  const defaults = getDefaultConfig()
+export function hasChanges(config: BrandConfig, brand: Brand): boolean {
+  const defaults = getDefaultConfig(brand)
 
   // Check navbar.logo
   if (config.navbar.logo !== defaults.navbar.logo) return true
@@ -71,7 +73,7 @@ export function hasChanges(config: SiteConfig): boolean {
  * Validates that required fields are filled
  * Returns an array of error messages, empty if valid
  */
-export function validateConfig(config: SiteConfig): string[] {
+export function validateConfig(config: BrandConfig): string[] {
   const errors: string[] = []
 
   if (!config.hero.title.trim()) {

@@ -1,16 +1,17 @@
 "use client"
 
 import { useState, useCallback, useMemo } from "react"
-import { Navbar } from "@/components/netflix/navbar"
-import { HeroSection } from "@/components/netflix/hero-section"
-import { ContentRow } from "@/components/netflix/content-row"
-import { BottomNav } from "@/components/netflix/bottom-nav"
-import { ShowModal } from "@/components/netflix/show-modal"
-import { NetflixIntro } from "@/components/netflix/netflix-intro"
-import { ConfigProvider, SiteConfig } from "@/lib/config-context"
+import { Navbar } from "@/components/brands/netflix/navbar"
+import { HeroSection } from "@/components/brands/netflix/hero-section"
+import { ContentRow } from "@/components/brands/netflix/content-row"
+import { BottomNav } from "@/components/brands/netflix/bottom-nav"
+import { ShowModal } from "@/components/brands/netflix/show-modal"
+import { NetflixIntro } from "@/components/brands/netflix/netflix-intro"
+import { ConfigProvider } from "@/lib/config-context"
+import type { BrandConfig } from "@/lib/brands"
 
 interface Props {
-  config: SiteConfig
+  config: BrandConfig
 }
 
 export function SavedPreviewClient({ config }: Props) {
@@ -31,7 +32,7 @@ export function SavedPreviewClient({ config }: Props) {
       title: row.title,
       items: row.showIds
         .map((id) => config.shows.find((s) => s.id === id))
-        .filter((show): show is SiteConfig["shows"][0] => show !== undefined),
+        .filter((show): show is BrandConfig["shows"][0] => show !== undefined),
     }))
   }, [config.contentRows, config.shows])
 

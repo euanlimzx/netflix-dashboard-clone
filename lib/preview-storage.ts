@@ -1,9 +1,11 @@
 import { supabase } from "./supabase"
-import { SiteConfig, getDefaultConfig } from "./config"
+import { getDefaultConfig } from "./brands"
+import type { Brand, BrandConfig } from "./brands"
 
 export interface SavedPreview {
   id: string
-  config: Partial<SiteConfig>
+  brand: Brand
+  config: Partial<BrandConfig>
   created_at: string
 }
 
@@ -11,7 +13,7 @@ export interface SavedPreview {
  * Saves a preview config to the database
  * @returns The UUID of the saved preview
  */
-export async function savePreview(config: SiteConfig): Promise<string> {
+export async function savePreview(config: BrandConfig, brand: Brand): Promise<string> {
   // Only store the editable fields to keep payload small
   const editableConfig = {
     navbar: {
@@ -38,7 +40,7 @@ export async function savePreview(config: SiteConfig): Promise<string> {
 
   const { data, error } = await supabase
     .from("preview_configs")
-    .insert({ config: editableConfig })
+    .insert({ config: editableConfig, brand })
     .select("id")
     .single()
 
@@ -51,12 +53,13 @@ export async function savePreview(config: SiteConfig): Promise<string> {
 
 /**
  * Loads a preview config from the database and merges with defaults
- * @returns The full SiteConfig or null if not found
+ * Validates that the preview belongs to the specified brand
+ * @returns The full BrandConfig or null if not found or brand mismatch
  */
-export async function loadPreview(uuid: string): Promise<SiteConfig | null> {
+export async function loadPreview(uuid: string, brand: Brand): Promise<BrandConfig | null> {
   const { data, error } = await supabase
     .from("preview_configs")
-    .select("config")
+    .select("config, brand")
     .eq("id", uuid)
     .single()
 
@@ -64,9 +67,14 @@ export async function loadPreview(uuid: string): Promise<SiteConfig | null> {
     return null
   }
 
+  // Validate brand matches
+  if (data.brand !== brand) {
+    return null
+  }
+
   // Merge saved config with defaults
-  const defaults = getDefaultConfig()
-  const saved = data.config as Partial<SiteConfig>
+  const defaults = getDefaultConfig(brand)
+  const saved = data.config as Partial<BrandConfig>
 
   return mergeWithDefaults(saved, defaults)
 }
@@ -75,9 +83,9 @@ export async function loadPreview(uuid: string): Promise<SiteConfig | null> {
  * Merges a partial config with defaults
  */
 function mergeWithDefaults(
-  saved: Partial<SiteConfig>,
-  defaults: SiteConfig
-): SiteConfig {
+  saved: Partial<BrandConfig>,
+  defaults: BrandConfig
+): BrandConfig {
   const merged = { ...defaults }
 
   // Merge navbar
@@ -104,7 +112,7 @@ function mergeWithDefaults(
     const defaultIds = new Set(defaults.shows.map((s) => s.id))
     const newShows = saved.shows.filter((s) => !defaultIds.has(s.id))
     if (newShows.length > 0) {
-      merged.shows = [...merged.shows, ...newShows] as SiteConfig["shows"]
+      merged.shows = [...merged.shows, ...newShows] as BrandConfig["shows"]
     }
   }
 

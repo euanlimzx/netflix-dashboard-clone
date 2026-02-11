@@ -2,16 +2,18 @@
 
 import { useState } from "react"
 import { Loader2, Sparkles } from "lucide-react"
-import { SiteConfig, hasChanges, validateConfig } from "@/lib/config-context"
+import { hasChanges, validateConfig } from "@/lib/config-context"
 import { savePreview } from "@/lib/preview-storage"
 import { toast } from "sonner"
+import type { Brand, BrandConfig } from "@/lib/brands"
 
 interface CreateButtonProps {
-  config: SiteConfig
+  config: BrandConfig
+  brand: Brand
   onSuccess: (uuid: string) => void
 }
 
-export function CreateButton({ config, onSuccess }: CreateButtonProps) {
+export function CreateButton({ config, brand, onSuccess }: CreateButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleCreate = async () => {
@@ -23,7 +25,7 @@ export function CreateButton({ config, onSuccess }: CreateButtonProps) {
     }
 
     // Check if there are any changes
-    if (!hasChanges(config)) {
+    if (!hasChanges(config, brand)) {
       toast.error("No changes to save", {
         description: "Make some changes before creating a preview.",
       })
@@ -33,7 +35,7 @@ export function CreateButton({ config, onSuccess }: CreateButtonProps) {
     setIsLoading(true)
 
     try {
-      const uuid = await savePreview(config)
+      const uuid = await savePreview(config, brand)
       toast.success("Preview created!")
       onSuccess(uuid)
     } catch (error) {

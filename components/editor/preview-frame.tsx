@@ -1,19 +1,21 @@
 "use client"
 
 import { useRef, useEffect, useCallback } from "react"
-import { SiteConfig } from "@/lib/config-context"
+import type { Brand, BrandConfig } from "@/lib/brands"
 
 type ViewportMode = "mobile" | "desktop"
 
 interface PreviewFrameProps {
-  config: SiteConfig
+  config: BrandConfig
   viewport: ViewportMode
+  brand: Brand
   fullScreen?: boolean
 }
 
 export function PreviewFrame({
   config,
   viewport,
+  brand,
   fullScreen = false,
 }: PreviewFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
@@ -98,7 +100,7 @@ export function PreviewFrame({
           >
             <iframe
               ref={iframeRef}
-              src="/preview"
+              src={`/${brand}/preview`}
               className="w-full h-full border-0"
               title="Preview"
             />

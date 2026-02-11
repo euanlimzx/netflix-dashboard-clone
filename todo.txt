@@ -1,4 +1,8 @@
 - clicking on the yes modal should open a new mdoal to show a message
-- work on mobile edit preview
 - re-styling the entire thing
 - add css grain?
+- add analytics
+- refactor defaults
+- for no button https://magicui.design/docs/components/cool-mode
+- for landing page
+> https://magicui.design/docs/components/highlighter

@@ -13,7 +13,7 @@ export default function NotFound() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/edit"
+            href="/netflix/edit"
             className="px-6 py-3 bg-netflix-red hover:bg-netflix-red/90 rounded-md font-medium transition-colors"
           >
             Create Your Own
