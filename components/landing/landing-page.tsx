@@ -72,6 +72,21 @@ export function LandingPage() {
         </p>
       </div>
 
+      {/* Footer */}
+      <footer className="py-8 text-center">
+        <p className="text-sm text-zinc-400">
+          Built with ❤️ by{" "}
+          <a
+            href="https://euanlimzx.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-zinc-600 hover:text-zinc-900 underline underline-offset-2 transition-colors"
+          >
+            euanlimzx
+          </a>
+        </p>
+      </footer>
+
       {/* Mobile confirmation modal */}
       <Dialog open={mobileModalOpen} onOpenChange={setMobileModalOpen}>
         <DialogContent className="rounded-none border-0 bg-black p-6 text-white max-w-[min(calc(100vw-2rem),360px)] [&>button:last-child]:hidden">
